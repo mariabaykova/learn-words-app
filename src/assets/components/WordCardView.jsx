@@ -36,12 +36,8 @@ export default function WordCardView(props) {
               {transcription}
             </Typography>
             <Typography variant="body2">{russian}</Typography>
-            {/* <IconButton aria-label="hide" onClick={handleShowTranslation}> */}
-            <IconButton aria-label="hide">
-              <ShowTranslIcon
-                sx={{ transform: "rotate(180deg)" }}
-                onClick={handleShowTranslation}
-              />
+            <IconButton aria-label="hide" onClick={handleShowTranslation}>
+              <ShowTranslIcon sx={{ transform: "rotate(180deg)" }} />
             </IconButton>
           </Box>
         ) : (

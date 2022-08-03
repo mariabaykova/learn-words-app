@@ -7,16 +7,16 @@ import WordCardView from "./WordCardView.jsx";
 import NothingFound from "./NothingFound.jsx";
 
 export default function FlippingCards(props) {
-  // строку ниже можно закомментировать, чтобы проверить поведение при пустом списке
-  const listOfWords = props.listOfWords;
-  // строку ниже можно раскомментировать, чтобы проверить поведение при пустом списке
-  // const listOfWords = [];
+  // если ничего не передали, значит считаем список пустым
+  const listOfWords = props.listOfWords || [];
+  // делать ли тут все-таки деструктуризацию?
+
   // в состоянии этого компонента хранится индекс карточки, которую нужно показать
   // нажатие на стрелки двигает этот индекс и при отрисовке показывается карточка с нужным индексом
   const [cardToShow, setCardToShow] = React.useState(0);
 
   // определить длину переданного списка.
-  const listLength = listOfWords ? listOfWords.length : 0;
+  const listLength = listOfWords.length;
   // если список пуст, выдать сообщение и не показывать стрелки и карточку
   // показать картинку с изображением "ничего нет"
 
@@ -39,18 +39,14 @@ export default function FlippingCards(props) {
               display: { xs: "none", sm: "flex" },
             }}
           >
-            {cardToShow > 0 ? (
-              <IconButton
-                aria-label="back"
-                onClick={() => setCardToShow((prevCardId) => prevCardId - 1)}
-              >
-                <ArrowBack />
-              </IconButton>
-            ) : (
-              <IconButton aria-label="back" sx={{ visibility: "hidden" }}>
-                <ArrowBack />
-              </IconButton>
-            )}
+            <IconButton
+              aria-label="back"
+              sx={{ visibility: cardToShow > 0 ? "visible" : "hidden" }}
+              onClick={() => setCardToShow((prevCardId) => prevCardId - 1)}
+            >
+              <ArrowBack />
+            </IconButton>
+
             <Box
               sx={{
                 width: { xs: 10 / 10, sm: 1 / 2, md: 1 / 3, lg: 1 / 5 },
@@ -61,20 +57,19 @@ export default function FlippingCards(props) {
                 russian={listOfWords[cardToShow].russian}
                 transcription={listOfWords[cardToShow].transcription}
                 showTransl={false}
+                key={listOfWords[cardToShow].id}
               />
             </Box>
-            {cardToShow < listLength - 1 ? (
-              <IconButton
-                aria-label="forward"
-                onClick={() => setCardToShow((prevCardId) => prevCardId + 1)}
-              >
-                <ArrowForward />
-              </IconButton>
-            ) : (
-              <IconButton aria-label="forward" sx={{ visibility: "hidden" }}>
-                <ArrowForward />
-              </IconButton>
-            )}
+
+            <IconButton
+              aria-label="forward"
+              sx={{
+                visibility: cardToShow < listLength - 1 ? "visible" : "hidden",
+              }}
+              onClick={() => setCardToShow((prevCardId) => prevCardId + 1)}
+            >
+              <ArrowForward />
+            </IconButton>
           </Box>
           {/* для маленьких экранов - пролистывание смахиванием */}
           <Box
@@ -96,6 +91,7 @@ export default function FlippingCards(props) {
                   borderRadius: 3,
                   boxShadow: 20,
                 }}
+                key={wCard.id}
               >
                 <WordCardView
                   english={wCard.english}
@@ -103,6 +99,7 @@ export default function FlippingCards(props) {
                   russian={wCard.russian}
                   tags={wCard.tags}
                   id={wCard.id}
+                  key={wCard.id}
                 />
               </Box>
             ))}
