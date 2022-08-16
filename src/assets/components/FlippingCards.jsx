@@ -8,8 +8,7 @@ import NothingFound from "./NothingFound.jsx";
 
 export default function FlippingCards(props) {
   // если ничего не передали, значит считаем список пустым
-  const listOfWords = props.listOfWords || [];
-  // делать ли тут все-таки деструктуризацию?
+  const { listOfWords = [] } = props;
 
   // в состоянии этого компонента хранится индекс карточки, которую нужно показать
   // нажатие на стрелки двигает этот индекс и при отрисовке показывается карточка с нужным индексом
@@ -24,6 +23,29 @@ export default function FlippingCards(props) {
   // если текущий индекс равен длине списка - 1, то не показываем стрелку вперед
 
   // для маленьких экранов - не показывать стрелки, а показать перелистывание
+
+  // Мы будем хранить карточки, для которых пользователь открыл перевод во внутреннем состоянии этого компонента
+  // это состояние, которое мы поднимаем из карточек показа слов WordCardView
+  const [showTranslationList, setShowTranslation] = React.useState([]);
+
+  function handleShowHideTranslation(cardId) {
+    // console.log("handleShowHideTranslation поднято " + cardId);
+    // console.log("showTranslationList до записи " + showTranslationList);
+    console.log("handleShowHideTranslation cardId: " + cardId);
+    setShowTranslation(
+      // здесь prevState - это предыдущее состояние списка
+      (prevState) => {
+        let ind = showTranslationList.indexOf(cardId);
+        console.log("handleShowHideTranslation ind: " + ind);
+        if (ind === -1) {
+          return [...prevState, cardId];
+        } else {
+          return prevState.filter((item) => item !== cardId);
+        }
+      }
+    );
+  }
+
   return (
     <>
       {!listLength ? (
@@ -56,7 +78,12 @@ export default function FlippingCards(props) {
                 english={listOfWords[cardToShow].english}
                 russian={listOfWords[cardToShow].russian}
                 transcription={listOfWords[cardToShow].transcription}
-                showTransl={false}
+                showTransl={showTranslationList.includes(
+                  listOfWords[cardToShow].id
+                )}
+                // showTransl={false}
+                id={listOfWords[cardToShow].id}
+                onShowHideTranslation={handleShowHideTranslation}
                 key={listOfWords[cardToShow].id}
               />
             </Box>

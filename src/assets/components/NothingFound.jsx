@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import picture from "../../noData.jpeg";
 
 export default function NothingFound(props) {
-  const title = props.title;
+  const { title = "Ooops!" } = props;
   return (
     <Box
       sx={{
@@ -22,7 +22,6 @@ export default function NothingFound(props) {
           justifyContent: "center",
           "& > :not(style)": {
             width: { xs: 250, sm: 350, md: 400, lg: 500 },
-            //   height: 300,
           },
         }}
       >

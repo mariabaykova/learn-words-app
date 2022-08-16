@@ -28,6 +28,7 @@ const style = {
 
 export default function WordCardMini(props) {
   const [editMode, setEditMode] = React.useState(false);
+  const { english, russian, transcription } = props;
 
   // состояние open отвечает за открытие модального окна, если true - открыть окно
   const [open, setOpen] = React.useState(false);
@@ -44,7 +45,6 @@ export default function WordCardMini(props) {
     setEditMode(false);
   };
 
-  // const classNameModal = classnames(styles.modalwin);
   return (
     <div>
       <Card
@@ -66,7 +66,7 @@ export default function WordCardMini(props) {
       >
         <CardContent sx={{ display: "flex", justifyContent: "center" }}>
           <Typography variant="h5" component="div">
-            {props.english}
+            {english}
           </Typography>
         </CardContent>
         <CardActions sx={{ display: "flex", justifyContent: "space-between" }}>
@@ -96,15 +96,15 @@ export default function WordCardMini(props) {
             {/* тут проверяем, что нужно показать в окне: форму просмотра или форму редактирования */}
             {editMode ? (
               <WordCardEdit
-                english={props.english}
-                russian={props.russian}
-                transcription={props.transcription}
+                english={english}
+                russian={russian}
+                transcription={transcription}
               />
             ) : (
               <WordCardView
-                english={props.english}
-                russian={props.russian}
-                transcription={props.transcription}
+                english={english}
+                russian={russian}
+                transcription={transcription}
               />
             )}
           </Box>

@@ -13,9 +13,8 @@ import Slide from "@mui/material/Slide";
 import useScrollTrigger from "@mui/material/useScrollTrigger";
 import SchoolIcon from "@mui/icons-material/School";
 
-const pages = ["Home", "Flip"];
-
 function HeaderAppBar(props) {
+  const { onMenuClick, pages } = props;
   const [anchorElNav, setAnchorElNav] = React.useState(null);
 
   const handleOpenNavMenu = (event) => {
@@ -23,13 +22,12 @@ function HeaderAppBar(props) {
   };
 
   const handleCloseNavMenu = () => {
-    console.log("handleCloseNavMenu ");
     setAnchorElNav(null);
   };
 
   const handleMenuClick = (event) => {
-    // console.log("handleMenuClick " + event.currentTarget.textContent);
-    props.onMenuClick(event.currentTarget.textContent);
+    // props.onMenuClick(event.currentTarget.textContent);
+    onMenuClick(event.currentTarget.textContent);
     setAnchorElNav(null);
   };
 

@@ -8,13 +8,25 @@ import IconButton from "@mui/material/IconButton";
 
 export default function WordCardView(props) {
   // console.log("WordCardView start");
-  const { english, russian, transcription } = props;
+  const {
+    english,
+    russian,
+    transcription,
+    showTransl,
+    id,
+    onShowHideTranslation,
+  } = props;
   //   передаем в компонент состояние - показывать перевод или нет
   //   в зависимости от этого признака будем показывать или скрывать перевод и транскрипцию, по дефолту - скрыто
-  const [showTranslation, setShowTranslation] = React.useState(false);
+  const [showTranslation, setShowTranslation] = React.useState(
+    showTransl || false
+  );
   const handleShowTranslation = () => {
     setShowTranslation((prevState) => !prevState);
+    console.log("поднимаем значение " + id);
+    onShowHideTranslation(id);
   };
+
   // console.log("WordCardView showTranslation " + showTranslation);
   return (
     <Card

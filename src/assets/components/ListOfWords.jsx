@@ -2,11 +2,10 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 
-// import { listOfWords } from "../data/listOfWords.js";
 import WordCardMini from "./WordCardMini.jsx";
 
 export default function ListOfWords(props) {
-  const listOfWords = props.listOfWords;
+  const { listOfWords = [] } = props;
   return (
     <Box
       sx={{
@@ -29,6 +28,7 @@ export default function ListOfWords(props) {
               russian={wCard.russian}
               tags={wCard.tags}
               id={wCard.id}
+              ind={index}
             />
           </Grid>
         ))}
