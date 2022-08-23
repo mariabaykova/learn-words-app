@@ -5,7 +5,11 @@ import Grid from "@mui/material/Grid";
 import WordCardMini from "./WordCardMini.jsx";
 
 export default function ListOfWords(props) {
-  const { listOfWords = [] } = props;
+  const { listOfWords = [], deletedCardsList = [], onClickDelete } = props;
+
+  // const [deletedCard, setDeletedCard] = React.useState(null);
+  // setDeletedCard(onClickDelete(deletedCard));
+
   return (
     <Box
       sx={{
@@ -21,16 +25,29 @@ export default function ListOfWords(props) {
         }}
       >
         {listOfWords.map((wCard, index) => (
-          <Grid item xs={6} sm={4} md={2} key={index}>
+          // {(deletedCardsList.includes(wCard.id)) &&
+          <Grid
+            item
+            xs={6}
+            sm={4}
+            md={2}
+            key={index}
+            sx={{
+              visibility: !deletedCardsList.includes(wCard.id)
+                ? "visible"
+                : "hidden",
+            }}
+          >
             <WordCardMini
               english={wCard.english}
               transcription={wCard.transcription}
               russian={wCard.russian}
-              tags={wCard.tags}
+              // tags={wCard.tags}
               id={wCard.id}
               ind={index}
             />
           </Grid>
+          // }
         ))}
       </Grid>
     </Box>

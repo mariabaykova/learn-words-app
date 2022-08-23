@@ -28,7 +28,7 @@ const style = {
 
 export default function WordCardMini(props) {
   const [editMode, setEditMode] = React.useState(false);
-  const { english, russian, transcription } = props;
+  const { english, russian, transcription, id } = props;
 
   // состояние open отвечает за открытие модального окна, если true - открыть окно
   const [open, setOpen] = React.useState(false);
@@ -43,6 +43,11 @@ export default function WordCardMini(props) {
   const handleCloseWin = () => {
     setOpen(false);
     setEditMode(false);
+  };
+
+  // передаем в компонент для просмотра карточки, что при показе и скрытии перевода не нужно передавать в текущий компонент id карточки, здесь нам это не нужно
+  const handleShowHideTranslation = () => {
+    return;
   };
 
   return (
@@ -105,6 +110,9 @@ export default function WordCardMini(props) {
                 english={english}
                 russian={russian}
                 transcription={transcription}
+                showTranslationFlag={false}
+                id={id}
+                onShowHideTranslation={handleShowHideTranslation}
               />
             )}
           </Box>

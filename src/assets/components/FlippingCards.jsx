@@ -5,10 +5,11 @@ import ArrowForward from "@mui/icons-material/ArrowForward";
 import IconButton from "@mui/material/IconButton";
 import WordCardView from "./WordCardView.jsx";
 import NothingFound from "./NothingFound.jsx";
+import Utilities from "../utilities/Utilities.js";
 
 export default function FlippingCards(props) {
   // если ничего не передали, значит считаем список пустым
-  const { listOfWords = [] } = props;
+  const { listOfWords = [], deletedCardsList = [] } = props;
 
   // в состоянии этого компонента хранится индекс карточки, которую нужно показать
   // нажатие на стрелки двигает этот индекс и при отрисовке показывается карточка с нужным индексом
@@ -29,19 +30,17 @@ export default function FlippingCards(props) {
   const [showTranslationList, setShowTranslation] = React.useState([]);
 
   function handleShowHideTranslation(cardId) {
-    // console.log("handleShowHideTranslation поднято " + cardId);
-    // console.log("showTranslationList до записи " + showTranslationList);
-    console.log("handleShowHideTranslation cardId: " + cardId);
     setShowTranslation(
       // здесь prevState - это предыдущее состояние списка
       (prevState) => {
-        let ind = showTranslationList.indexOf(cardId);
-        console.log("handleShowHideTranslation ind: " + ind);
-        if (ind === -1) {
-          return [...prevState, cardId];
-        } else {
-          return prevState.filter((item) => item !== cardId);
-        }
+        // let ind = showTranslationList.indexOf(cardId);
+
+        // if (ind === -1) {
+        //   return [...prevState, cardId];
+        // } else {
+        //   return prevState.filter((item) => item !== cardId);
+        // }
+        return Utilities.UpdateArray(prevState, cardId);
       }
     );
   }
@@ -78,10 +77,9 @@ export default function FlippingCards(props) {
                 english={listOfWords[cardToShow].english}
                 russian={listOfWords[cardToShow].russian}
                 transcription={listOfWords[cardToShow].transcription}
-                showTransl={showTranslationList.includes(
+                showTranslationFlag={showTranslationList.includes(
                   listOfWords[cardToShow].id
                 )}
-                // showTransl={false}
                 id={listOfWords[cardToShow].id}
                 onShowHideTranslation={handleShowHideTranslation}
                 key={listOfWords[cardToShow].id}
@@ -127,6 +125,8 @@ export default function FlippingCards(props) {
                   tags={wCard.tags}
                   id={wCard.id}
                   key={wCard.id}
+                  showTranslationFlag={showTranslationList.includes(wCard.id)}
+                  onShowHideTranslation={handleShowHideTranslation}
                 />
               </Box>
             ))}
