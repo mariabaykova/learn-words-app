@@ -19,19 +19,16 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  // minWidth: 1 / 4,
-  // width: AutoAwesome,
-  // minWidth={{ xs: "3 / 4", md: "1 / 4" }},
-  width: 1 / 2,
+  width: { xs: 7 / 8, sm: 1 / 2, md: 1 / 3 },
   bgcolor: "background.paper",
   border: "2px solid gray",
   borderRadius: 3,
   boxShadow: 24,
-  // p: 4,
 };
 
 export default function WordCardMini(props) {
   const [editMode, setEditMode] = React.useState(false);
+  const { english, russian, transcription, id } = props;
 
   // состояние open отвечает за открытие модального окна, если true - открыть окно
   const [open, setOpen] = React.useState(false);
@@ -48,12 +45,17 @@ export default function WordCardMini(props) {
     setEditMode(false);
   };
 
-  // const classNameModal = classnames(styles.modalwin);
+  // передаем в компонент для просмотра карточки, что при показе и скрытии перевода не нужно передавать в текущий компонент id карточки, здесь нам это не нужно
+  const handleShowHideTranslation = () => {
+    return;
+  };
+
   return (
     <div>
       <Card
         sx={{
           minWidth: 150,
+          minHeight: 152,
           "&:hover": {
             mt: -0.5,
             mx: -0.5,
@@ -62,11 +64,14 @@ export default function WordCardMini(props) {
             zIndex: "tooltip",
             cursor: "pointer",
           },
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
         }}
       >
-        <CardContent>
+        <CardContent sx={{ display: "flex", justifyContent: "center" }}>
           <Typography variant="h5" component="div">
-            {props.english}
+            {english}
           </Typography>
         </CardContent>
         <CardActions sx={{ display: "flex", justifyContent: "space-between" }}>
@@ -96,15 +101,18 @@ export default function WordCardMini(props) {
             {/* тут проверяем, что нужно показать в окне: форму просмотра или форму редактирования */}
             {editMode ? (
               <WordCardEdit
-                english={props.english}
-                russian={props.russian}
-                transcription={props.transcription}
+                english={english}
+                russian={russian}
+                transcription={transcription}
               />
             ) : (
               <WordCardView
-                english={props.english}
-                russian={props.russian}
-                transcription={props.transcription}
+                english={english}
+                russian={russian}
+                transcription={transcription}
+                showTranslationFlag={false}
+                id={id}
+                onShowHideTranslation={handleShowHideTranslation}
               />
             )}
           </Box>

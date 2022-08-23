@@ -7,19 +7,29 @@ import ShowTranslIcon from "@mui/icons-material/ExpandMore";
 import IconButton from "@mui/material/IconButton";
 
 export default function WordCardView(props) {
-  const { english, russian, transcription } = props;
+  const {
+    english,
+    russian,
+    transcription,
+    showTranslationFlag,
+    id,
+    onShowHideTranslation,
+  } = props;
   //   передаем в компонент состояние - показывать перевод или нет
   //   в зависимости от этого признака будем показывать или скрывать перевод и транскрипцию, по дефолту - скрыто
   const [showTranslation, setShowTranslation] = React.useState(
-    props.showTranslation || false
+    showTranslationFlag || false
   );
   const handleShowTranslation = () => {
     setShowTranslation((prevState) => !prevState);
+    onShowHideTranslation(id);
   };
+
   return (
     <Card
       sx={{
         minWidth: 150,
+        minHeight: 130,
         display: "flex",
         justifyContent: "center",
         textAlign: "center",
@@ -35,6 +45,9 @@ export default function WordCardView(props) {
               {transcription}
             </Typography>
             <Typography variant="body2">{russian}</Typography>
+            <IconButton aria-label="hide" onClick={handleShowTranslation}>
+              <ShowTranslIcon sx={{ transform: "rotate(180deg)" }} />
+            </IconButton>
           </Box>
         ) : (
           <Box component="div">
