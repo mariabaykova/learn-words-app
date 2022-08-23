@@ -28,7 +28,7 @@ const style = {
 
 export default function WordCardMini(props) {
   const [editMode, setEditMode] = React.useState(false);
-  const { english, russian, transcription, id } = props;
+  const { english, russian, transcription, id, onLiftDelCardId } = props;
 
   // состояние open отвечает за открытие модального окна, если true - открыть окно
   const [open, setOpen] = React.useState(false);
@@ -49,6 +49,10 @@ export default function WordCardMini(props) {
   const handleShowHideTranslation = () => {
     return;
   };
+
+  function liftDelCardUp(cardId) {
+    onLiftDelCardId(cardId);
+  }
 
   return (
     <div>
@@ -104,6 +108,8 @@ export default function WordCardMini(props) {
                 english={english}
                 russian={russian}
                 transcription={transcription}
+                id={id}
+                onLiftDelCardId={liftDelCardUp}
               />
             ) : (
               <WordCardView
