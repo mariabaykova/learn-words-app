@@ -10,7 +10,7 @@ import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
 
 export default function WordCardEdit(props) {
-  const { english, russian, transcription } = props;
+  const { english, russian, transcription, id, onLiftDelCardId } = props;
   //   вводим состояние - "изменения сохранены"
   const [saved, setSaved] = React.useState(false);
   // изменения сохранены при клике на иконку "сохранить" SaveIcon
@@ -23,6 +23,7 @@ export default function WordCardEdit(props) {
   // считаем, что удалена при клике на DeleteIcon
   const handleDeleteClick = () => {
     setDeleted(true);
+    onLiftDelCardId(id);
   };
   return (
     <Card

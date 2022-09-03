@@ -17,9 +17,9 @@ function App() {
   }
   // храним список удаленных в этой сессии карточек в состоянии этого компонента
   const [deletedCardsList, setCardAvailability] = React.useState([]);
-  function handleClickDelete(cardId) {
+  function addToDelList(cardId) {
     setCardAvailability((prevState) => {
-      return Utilities.UpdateArray(prevState, cardId);
+      return Utilities.PushToArray(prevState, cardId);
     });
   }
 
@@ -28,15 +28,13 @@ function App() {
       <HeaderAppBar onMenuClick={handleMenuClick} pages={pages} />
       {menuItemSelected === "Home" && (
         <ListOfWords
-          listOfWords={listOfWords}
-          deletedCardsList={deletedCardsList}
-          onClickDelete={handleClickDelete}
+          listOfWords={Utilities.DiffOfArrays(listOfWords, deletedCardsList)}
+          onLiftDelCardId={addToDelList}
         />
       )}
       {menuItemSelected === "Flip" && (
         <FlippingCards
-          listOfWords={listOfWords}
-          deletedCardsList={deletedCardsList}
+          listOfWords={Utilities.DiffOfArrays(listOfWords, deletedCardsList)}
         />
       )}
     </div>

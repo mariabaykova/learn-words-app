@@ -9,7 +9,7 @@ import Utilities from "../utilities/Utilities.js";
 
 export default function FlippingCards(props) {
   // если ничего не передали, значит считаем список пустым
-  const { listOfWords = [], deletedCardsList = [] } = props;
+  const { listOfWords = [] } = props;
 
   // в состоянии этого компонента хранится индекс карточки, которую нужно показать
   // нажатие на стрелки двигает этот индекс и при отрисовке показывается карточка с нужным индексом
@@ -33,13 +33,6 @@ export default function FlippingCards(props) {
     setShowTranslation(
       // здесь prevState - это предыдущее состояние списка
       (prevState) => {
-        // let ind = showTranslationList.indexOf(cardId);
-
-        // if (ind === -1) {
-        //   return [...prevState, cardId];
-        // } else {
-        //   return prevState.filter((item) => item !== cardId);
-        // }
         return Utilities.UpdateArray(prevState, cardId);
       }
     );
