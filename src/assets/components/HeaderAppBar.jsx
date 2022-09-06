@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Link as RouterLink } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -14,7 +15,7 @@ import useScrollTrigger from "@mui/material/useScrollTrigger";
 import SchoolIcon from "@mui/icons-material/School";
 
 function HeaderAppBar(props) {
-  const { onMenuClick, pages } = props;
+  const { pages } = props;
   const [anchorElNav, setAnchorElNav] = React.useState(null);
 
   const handleOpenNavMenu = (event) => {
@@ -26,8 +27,6 @@ function HeaderAppBar(props) {
   };
 
   const handleMenuClick = (event) => {
-    // props.onMenuClick(event.currentTarget.textContent);
-    onMenuClick(event.currentTarget.textContent);
     setAnchorElNav(null);
   };
 
@@ -69,8 +68,8 @@ function HeaderAppBar(props) {
             <Typography
               variant="h6"
               noWrap
-              component="a"
-              href="/"
+              component={RouterLink}
+              to="/"
               sx={{
                 mr: 2,
                 display: { xs: "none", md: "flex" },
@@ -119,8 +118,13 @@ function HeaderAppBar(props) {
                 }}
               >
                 {pages.map((page) => (
-                  <MenuItem key={page} onClick={handleMenuClick}>
-                    <Typography textAlign="center">{page}</Typography>
+                  <MenuItem
+                    key={page.route}
+                    onClick={handleMenuClick}
+                    component={RouterLink}
+                    to={"/" + page.route}
+                  >
+                    <Typography textAlign="center">{page.menuTitle}</Typography>
                   </MenuItem>
                 ))}
               </Menu>
@@ -136,13 +140,11 @@ function HeaderAppBar(props) {
             {/* заголовок для маленьких экранов */}
             <Typography
               variant="h5"
-              // wrap="true"
-              component="a"
-              href=""
+              component={RouterLink}
+              to="/"
               sx={{
                 display: { xs: "flex", md: "none" },
                 flexGrow: 0,
-                // flexShrink: 1,
                 fontFamily: "monospace",
                 fontWeight: 700,
                 letterSpacing: ".2rem",
@@ -164,11 +166,13 @@ function HeaderAppBar(props) {
             >
               {pages.map((page) => (
                 <Button
-                  key={page}
+                  component={RouterLink}
+                  to={"/" + page.route}
+                  key={page.route}
                   onClick={handleMenuClick}
                   sx={{ my: 2, color: "white", display: "block" }}
                 >
-                  {page}
+                  {page.menuTitle}
                 </Button>
               ))}
             </Box>
