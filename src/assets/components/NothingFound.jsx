@@ -1,10 +1,9 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import picture from "../../noData.jpeg";
 
 export default function NothingFound(props) {
-  const { title = "Ooops!" } = props;
+  const { title = "Ooops!", picture } = props;
   return (
     <Box
       sx={{

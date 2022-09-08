@@ -1,20 +1,24 @@
 import * as React from "react";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 import "./App.css";
 
 import HeaderAppBar from "./assets/components/HeaderAppBar";
 import ListOfWords from "./assets/components/ListOfWords";
 import FlippingCards from "./assets/components/FlippingCards";
+import PageNotFound from "./assets/components/NothingFound";
 
 import { listOfWords } from "./assets/data/listOfWords.js";
 import Utilities from "./assets/utilities/Utilities";
-const pages = ["Home", "Flip"];
+
+import pic404 from "./404page.jpeg";
+
+// структура для описания пунктов меню. Если появится новый, вносим заголовок для меню и роут
+const pages = [
+  { menuTitle: "Home", route: "home" },
+  { menuTitle: "Flip", route: "flip" },
+];
 
 function App() {
-  // будем хранить во внутреннем состоянии этого компонента информацию о том, какой пункт меню был выбран в HeaderAppBar, в зависимости от этого мы будем показывать другие компоненты (список слов, просмотр слов etc). Информация о выбранном пункте будет поднята из HeaderAppBar.
-  const [menuItemSelected, setMenuItem] = React.useState("Home");
-  function handleMenuClick(menuItem) {
-    setMenuItem(menuItem);
-  }
   // храним список удаленных в этой сессии карточек в состоянии этого компонента
   const [deletedCardsList, setCardAvailability] = React.useState([]);
   function addToDelList(cardId) {
@@ -23,21 +27,46 @@ function App() {
     });
   }
 
+  // какие карточки нужно показать
+  const cardsToShow = Utilities.DiffOfArrays(listOfWords, deletedCardsList);
+
   return (
-    <div className="wrapper">
-      <HeaderAppBar onMenuClick={handleMenuClick} pages={pages} />
-      {menuItemSelected === "Home" && (
-        <ListOfWords
-          listOfWords={Utilities.DiffOfArrays(listOfWords, deletedCardsList)}
-          onLiftDelCardId={addToDelList}
-        />
-      )}
-      {menuItemSelected === "Flip" && (
-        <FlippingCards
-          listOfWords={Utilities.DiffOfArrays(listOfWords, deletedCardsList)}
-        />
-      )}
-    </div>
+    <BrowserRouter>
+      <div className="wrapper">
+        <HeaderAppBar pages={pages} />
+
+        <Routes>
+          <Route
+            path="/home"
+            element={
+              <ListOfWords
+                listOfWords={cardsToShow}
+                onLiftDelCardId={addToDelList}
+              />
+            }
+          />
+          <Route
+            path="/"
+            element={
+              <ListOfWords
+                listOfWords={cardsToShow}
+                onLiftDelCardId={addToDelList}
+              />
+            }
+          />
+          <Route
+            path="/flip"
+            element={<FlippingCards listOfWords={cardsToShow} />}
+          />
+          <Route
+            path="*"
+            element={
+              <PageNotFound title="This page doesn't exist" picture={pic404} />
+            }
+          />
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
 

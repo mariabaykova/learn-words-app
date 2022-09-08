@@ -6,6 +6,7 @@ import IconButton from "@mui/material/IconButton";
 import WordCardView from "./WordCardView.jsx";
 import NothingFound from "./NothingFound.jsx";
 import Utilities from "../utilities/Utilities.js";
+import picNoData from "../../noData.jpeg";
 
 export default function FlippingCards(props) {
   // если ничего не передали, значит считаем список пустым
@@ -41,7 +42,10 @@ export default function FlippingCards(props) {
   return (
     <>
       {!listLength ? (
-        <NothingFound title="Sorry, looks like you have no cards to flip"></NothingFound>
+        <NothingFound
+          title="Sorry, looks like you have no cards to flip"
+          picture={picNoData}
+        ></NothingFound>
       ) : (
         <>
           <Box
