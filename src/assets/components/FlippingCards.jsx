@@ -1,5 +1,7 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
 import ArrowBack from "@mui/icons-material/ArrowBack";
 import ArrowForward from "@mui/icons-material/ArrowForward";
 import IconButton from "@mui/material/IconButton";
@@ -29,6 +31,7 @@ export default function FlippingCards(props) {
   // Мы будем хранить карточки, для которых пользователь открыл перевод во внутреннем состоянии этого компонента
   // это состояние, которое мы поднимаем из карточек показа слов WordCardView
   const [showTranslationList, setShowTranslation] = React.useState([]);
+  const [learnedWordsList, setLearnedWords] = React.useState([]);
 
   function handleShowHideTranslation(cardId) {
     setShowTranslation(
@@ -37,8 +40,12 @@ export default function FlippingCards(props) {
         return Utilities.UpdateArray(prevState, cardId);
       }
     );
+    setLearnedWords((prevState) => {
+      return Utilities.PushToArray(prevState, cardId);
+    });
   }
 
+  const learnedWordsNumber = learnedWordsList.length || 0;
   return (
     <>
       {!listLength ? (
@@ -48,6 +55,11 @@ export default function FlippingCards(props) {
         ></NothingFound>
       ) : (
         <>
+          <Alert severity="success">
+            <AlertTitle>Wow!</AlertTitle>
+            You've learned <strong>{learnedWordsNumber}</strong> words!
+          </Alert>
+
           <Box
             sx={{
               justifyContent: "center",
@@ -124,6 +136,7 @@ export default function FlippingCards(props) {
                   key={wCard.id}
                   showTranslationFlag={showTranslationList.includes(wCard.id)}
                   onShowHideTranslation={handleShowHideTranslation}
+                  disableAutoFocus={true}
                 />
               </Box>
             ))}

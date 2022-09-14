@@ -1,5 +1,6 @@
 export default class Utilities {
   static UpdateArray(arr, elem) {
+    // добавить элемент в массив, если его там нет. Удалить, если он там есть.
     let ind = arr.indexOf(elem);
 
     if (ind === -1) {
@@ -9,6 +10,7 @@ export default class Utilities {
     }
   }
   static PushToArray(arr, elem) {
+    // добавить элемент в массив только если его там нет
     let ind = arr.indexOf(elem);
 
     if (ind === -1) {

@@ -1,5 +1,6 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
+import TrapFocus from "@mui/base/TrapFocus";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
@@ -14,7 +15,9 @@ export default function WordCardView(props) {
     showTranslationFlag,
     id,
     onShowHideTranslation,
+    disableAutoFocus = false,
   } = props;
+
   //   передаем в компонент состояние - показывать перевод или нет
   //   в зависимости от этого признака будем показывать или скрывать перевод и транскрипцию, по дефолту - скрыто
   const [showTranslation, setShowTranslation] = React.useState(
@@ -45,15 +48,31 @@ export default function WordCardView(props) {
               {transcription}
             </Typography>
             <Typography variant="body2">{russian}</Typography>
-            <IconButton aria-label="hide" onClick={handleShowTranslation}>
-              <ShowTranslIcon sx={{ transform: "rotate(180deg)" }} />
-            </IconButton>
+            {!disableAutoFocus ? (
+              <TrapFocus open>
+                <IconButton aria-label="hide" onClick={handleShowTranslation}>
+                  <ShowTranslIcon sx={{ transform: "rotate(180deg)" }} />
+                </IconButton>
+              </TrapFocus>
+            ) : (
+              <IconButton aria-label="hide" onClick={handleShowTranslation}>
+                <ShowTranslIcon sx={{ transform: "rotate(180deg)" }} />
+              </IconButton>
+            )}
           </Box>
         ) : (
           <Box component="div">
-            <IconButton aria-label="show" onClick={handleShowTranslation}>
-              <ShowTranslIcon />
-            </IconButton>
+            {!disableAutoFocus ? (
+              <TrapFocus open>
+                <IconButton aria-label="show" onClick={handleShowTranslation}>
+                  <ShowTranslIcon />
+                </IconButton>
+              </TrapFocus>
+            ) : (
+              <IconButton aria-label="show" onClick={handleShowTranslation}>
+                <ShowTranslIcon />
+              </IconButton>
+            )}
           </Box>
         )}
       </CardContent>
