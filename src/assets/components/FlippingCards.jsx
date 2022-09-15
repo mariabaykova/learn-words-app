@@ -46,6 +46,31 @@ export default function FlippingCards(props) {
   }
 
   const learnedWordsNumber = learnedWordsList.length || 0;
+
+  // прослушивание документа на нажатие стрелок
+  React.useEffect(() => {
+    const handleClick = (event) => {
+      if (event.code === "ArrowLeft") {
+        console.log("left arrow pressed" + event.code);
+        // изменяем (-1) состояние, в котором хранится карта, которую сейчас показываем
+        setCardToShow((prevCardId) => {
+          return prevCardId > 0 ? prevCardId - 1 : 0;
+        });
+      }
+      if (event.code === "ArrowRight") {
+        setCardToShow((prevCardId) => {
+          return prevCardId < listLength - 1 ? prevCardId + 1 : listLength - 1;
+        });
+      }
+    };
+    // подключаем прослушивание документа при монтировании компонента
+    document.body.addEventListener("keydown", handleClick);
+
+    // при размонтировании прослушка документа снимается
+    return () => {
+      document.body.removeEventListener("keydown", handleClick);
+    };
+  });
   return (
     <>
       {!listLength ? (
