@@ -5,6 +5,7 @@ import "./App.css";
 import HeaderAppBar from "./assets/components/HeaderAppBar";
 import ListOfWords from "./assets/components/ListOfWords";
 import FlippingCards from "./assets/components/FlippingCards";
+// import Train from "./assets/components/Train";
 import PageNotFound from "./assets/components/NothingFound";
 
 import { listOfWords } from "./assets/data/listOfWords.js";
@@ -13,9 +14,11 @@ import Utilities from "./assets/utilities/Utilities";
 import pic404 from "./404page.jpeg";
 
 // структура для описания пунктов меню. Если появится новый, вносим заголовок для меню и роут
+// перенести в Settings?
 const pages = [
   { menuTitle: "Home", route: "home" },
   { menuTitle: "Flip", route: "flip" },
+  // { menuTitle: "Train", route: "train" },
 ];
 
 function App() {
@@ -58,6 +61,7 @@ function App() {
             path="/flip"
             element={<FlippingCards listOfWords={cardsToShow} />}
           />
+          {/* <Route path="/train" element={<Train />} /> */}
           <Route
             path="*"
             element={
