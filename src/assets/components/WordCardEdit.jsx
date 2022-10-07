@@ -8,14 +8,38 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import DoneIcon from "@mui/icons-material/Done";
 import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
+import { editableFields, emptyFieldMsg } from "../conf/Settings";
+import Validation from "../../assets/utilities/Validation";
 
 export default function WordCardEdit(props) {
   const { english, russian, transcription, id, onLiftDelCardId } = props;
   //   вводим состояние - "изменения сохранены"
   const [saved, setSaved] = React.useState(false);
   // изменения сохранены при клике на иконку "сохранить" SaveIcon
-  const handleSaveClick = () => {
-    setSaved((prevState) => !prevState);
+  const handleSaveClick = (e) => {
+    e.preventDefault(); // 👈️ prevent page refresh
+
+    // проверка корректности заполнения полей + сразу обновление состояния с ошибками
+    setInputErrorsState((prevState) => {
+      let errInd = 0;
+      for (let key in prevState) {
+        console.log("key --> " + key);
+        console.log("inputsState[key]) --> " + inputsState[key]);
+        prevState[key] = "";
+        if (Validation.isEmpty(inputsState[key])) {
+          prevState[key] = emptyFieldMsg;
+          errInd++;
+        } else if (!Validation.isFormatCorrect(inputsState[key], key)) {
+          prevState[key] = editableFields[key].regexpMsg;
+          errInd++;
+        }
+      }
+      if (!errInd) {
+        setSaved((prevState) => !prevState);
+      }
+
+      return { ...prevState };
+    });
   };
 
   // вводим состояние "карточка удалена"
@@ -25,6 +49,33 @@ export default function WordCardEdit(props) {
     setDeleted(true);
     onLiftDelCardId(id);
   };
+
+  // состояние редактируемых полей
+
+  const [inputsState, setInputsState] = React.useState({
+    [editableFields.englishWord.id]: english,
+    [editableFields.transcription.id]: transcription,
+    [editableFields.russianWord.id]: russian,
+  });
+
+  // состояние ошибок в редактируемых полях, сначала их нет
+  const [inputErrorsState, setInputErrorsState] = React.useState({
+    [editableFields.englishWord.id]: "",
+    [editableFields.transcription.id]: "",
+    [editableFields.russianWord.id]: "",
+  });
+
+  console.log("inputsState 👉️", inputsState);
+  const handleInputChange = (e) => {
+    const id = e.target.id;
+    const val = e.target.value;
+
+    setInputsState((prevState) => {
+      prevState[id] = val;
+      return { ...prevState };
+    });
+  };
+
   return (
     <Card
       sx={{
@@ -34,6 +85,8 @@ export default function WordCardEdit(props) {
         justifyContent: "space-between",
         flexDirection: "column",
       }}
+      component="form"
+      onSubmit={handleSaveClick}
     >
       {isDeleted ? (
         <Box
@@ -50,36 +103,45 @@ export default function WordCardEdit(props) {
       ) : (
         <CardContent>
           <Box
-            component="form"
             sx={{
               "& .MuiTextField-root": { m: 0.2 },
               display: "flex",
               justifyContent: "space-between",
-              alignItems: "center",
+              alignItems: "stretch",
               flexDirection: "column",
             }}
-            noValidate
+            // noValidate
             autoComplete="off"
           >
             <TextField
-              required
-              id="wordEng"
-              size="small"
-              defaultValue={english}
+              label={editableFields.englishWord.label}
+              variant={editableFields.englishWord.variant}
+              id={editableFields.englishWord.id}
+              size={editableFields.englishWord.size}
+              onChange={handleInputChange}
+              value={inputsState.englishWord}
+              error={Boolean(inputErrorsState.englishWord.length)}
+              helperText={inputErrorsState.englishWord}
             />
             <TextField
-              required
-              id="wordTrnscr"
-              size="small"
-              // className={styles.input}
-              defaultValue={transcription}
+              label={editableFields.transcription.label}
+              variant={editableFields.transcription.variant}
+              id={editableFields.transcription.id}
+              size={editableFields.transcription.size}
+              onChange={handleInputChange}
+              value={inputsState.transcription}
+              error={Boolean(inputErrorsState.transcription.length)}
+              helperText={inputErrorsState.transcription}
             />
             <TextField
-              required
-              id="wordRus"
-              size="small"
-              // className={styles.input}
-              defaultValue={russian}
+              label={editableFields.russianWord.label}
+              variant={editableFields.russianWord.variant}
+              id={editableFields.russianWord.id}
+              size={editableFields.russianWord.size}
+              onChange={handleInputChange}
+              value={inputsState.russianWord}
+              error={Boolean(inputErrorsState.russianWord.length)}
+              helperText={inputErrorsState.russianWord}
             />
           </Box>
         </CardContent>
@@ -89,7 +151,8 @@ export default function WordCardEdit(props) {
           {saved ? (
             <DoneIcon />
           ) : (
-            <IconButton aria-label="save" onClick={handleSaveClick}>
+            // кнопка - сохранить изменения
+            <IconButton aria-label="save" type="submit">
               <SaveIcon />
             </IconButton>
           )}
