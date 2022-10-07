@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
-import "./App.css";
 
 import HeaderAppBar from "./assets/components/HeaderAppBar";
 import ListOfWords from "./assets/components/ListOfWords";
@@ -35,7 +34,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className="wrapper">
+      <div>
         <HeaderAppBar pages={pages} />
 
         <Routes>
