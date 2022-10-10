@@ -70,6 +70,30 @@ export default function FlippingCards(props) {
       document.body.removeEventListener("keydown", handleClick);
     };
   });
+
+  const sxBoxWrap = {
+    justifyContent: "center",
+    alignItems: "center",
+    columnGap: 3,
+    padding: { xs: 1, sm: 4 },
+    display: { xs: "none", sm: "flex" },
+  };
+
+  const sxBoxSlider = {
+    scrollSnapType: "x mandatory",
+    webkitOwerflowScrolling: "touch",
+    overflowX: "scroll",
+    display: { xs: "flex", sm: "none" },
+  };
+  const sxBoxSlide = {
+    scrollSnapAlign: "start",
+    minWidth: "99%",
+    height: "99%",
+    bgcolor: "background.paper",
+    border: "1px solid gray",
+    borderRadius: 3,
+    boxShadow: 20,
+  };
   return (
     <>
       {!listLength ? (
@@ -84,15 +108,7 @@ export default function FlippingCards(props) {
             You've learned <strong>{learnedWordsNumber}</strong> words!
           </Alert>
 
-          <Box
-            sx={{
-              justifyContent: "center",
-              alignItems: "center",
-              columnGap: 3,
-              padding: { xs: 1, sm: 4 },
-              display: { xs: "none", sm: "flex" },
-            }}
-          >
+          <Box sx={sxBoxWrap}>
             <IconButton
               aria-label="back"
               sx={{ visibility: cardToShow > 0 ? "visible" : "hidden" }}
@@ -127,27 +143,9 @@ export default function FlippingCards(props) {
             </IconButton>
           </Box>
           {/* для маленьких экранов - пролистывание смахиванием */}
-          <Box
-            sx={{
-              scrollSnapType: "x mandatory",
-              webkitOwerflowScrolling: "touch",
-              overflowX: "scroll",
-              display: { xs: "flex", sm: "none" },
-            }}
-          >
+          <Box sx={sxBoxSlider}>
             {listOfWords.map((wCard, index) => (
-              <Box
-                sx={{
-                  scrollSnapAlign: "start",
-                  minWidth: "99%",
-                  height: "99%",
-                  bgcolor: "background.paper",
-                  border: "1px solid gray",
-                  borderRadius: 3,
-                  boxShadow: 20,
-                }}
-                key={wCard.id}
-              >
+              <Box sx={sxBoxSlide} key={wCard.id}>
                 <WordCardView
                   wordCard={wCard}
                   key={wCard.id}
