@@ -11,8 +11,34 @@ import TextField from "@mui/material/TextField";
 import { editableFields, emptyFieldMsg } from "../conf/Settings";
 import Validation from "../../assets/utilities/Validation";
 
+const sxMsgBox = {
+  minWidth: 150,
+  minHeight: 150,
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+};
+
+const sxCardContentBox = {
+  "& .MuiTextField-root": { m: 0.2 },
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "stretch",
+  flexDirection: "column",
+};
+
+const sxCard = {
+  minWidth: 150,
+  minHeight: 150,
+  display: "flex",
+  justifyContent: "space-between",
+  flexDirection: "column",
+};
+
+const sxCardActions = { display: "flex", justifyContent: "space-between" };
+
 export default function WordCardEdit(props) {
-  const { english, russian, transcription, id, onLiftDelCardId } = props;
+  const { wordCard, onLiftDelCardId } = props;
   //   вводим состояние - "изменения сохранены"
   const [saved, setSaved] = React.useState(false);
   // изменения сохранены при клике на иконку "сохранить" SaveIcon
@@ -23,8 +49,6 @@ export default function WordCardEdit(props) {
     setInputErrorsState((prevState) => {
       let errInd = 0;
       for (let key in prevState) {
-        console.log("key --> " + key);
-        console.log("inputsState[key]) --> " + inputsState[key]);
         prevState[key] = "";
         if (Validation.isEmpty(inputsState[key])) {
           prevState[key] = emptyFieldMsg;
@@ -47,15 +71,15 @@ export default function WordCardEdit(props) {
   // считаем, что удалена при клике на DeleteIcon
   const handleDeleteClick = () => {
     setDeleted(true);
-    onLiftDelCardId(id);
+    onLiftDelCardId(wordCard.id);
   };
 
   // состояние редактируемых полей
 
   const [inputsState, setInputsState] = React.useState({
-    [editableFields.englishWord.id]: english,
-    [editableFields.transcription.id]: transcription,
-    [editableFields.russianWord.id]: russian,
+    [editableFields.englishWord.id]: wordCard.english,
+    [editableFields.transcription.id]: wordCard.transcription,
+    [editableFields.russianWord.id]: wordCard.russian,
   });
 
   // состояние ошибок в редактируемых полях, сначала их нет
@@ -65,7 +89,6 @@ export default function WordCardEdit(props) {
     [editableFields.russianWord.id]: "",
   });
 
-  console.log("inputsState 👉️", inputsState);
   const handleInputChange = (e) => {
     const id = e.target.id;
     const val = e.target.value;
@@ -77,42 +100,12 @@ export default function WordCardEdit(props) {
   };
 
   return (
-    <Card
-      sx={{
-        minWidth: 150,
-        minHeight: 150,
-        display: "flex",
-        justifyContent: "space-between",
-        flexDirection: "column",
-      }}
-      component="form"
-      onSubmit={handleSaveClick}
-    >
+    <Card sx={sxCard} component="form" onSubmit={handleSaveClick}>
       {isDeleted ? (
-        <Box
-          sx={{
-            minWidth: 150,
-            minHeight: 150,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          Карточка была удалена
-        </Box>
+        <Box sx={sxMsgBox}>Card has been removed</Box>
       ) : (
         <CardContent>
-          <Box
-            sx={{
-              "& .MuiTextField-root": { m: 0.2 },
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "stretch",
-              flexDirection: "column",
-            }}
-            // noValidate
-            autoComplete="off"
-          >
+          <Box sx={sxCardContentBox} autoComplete="off">
             <TextField
               label={editableFields.englishWord.label}
               variant={editableFields.englishWord.variant}
@@ -147,7 +140,7 @@ export default function WordCardEdit(props) {
         </CardContent>
       )}
       {!isDeleted && (
-        <CardActions sx={{ display: "flex", justifyContent: "space-between" }}>
+        <CardActions sx={sxCardActions}>
           {saved ? (
             <DoneIcon />
           ) : (

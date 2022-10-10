@@ -27,13 +27,7 @@ export default function ListOfWords(props) {
       >
         {listOfWords.map((wCard, index) => (
           <Grid item xs={6} sm={4} md={2} key={index}>
-            <WordCardMini
-              english={wCard.english}
-              transcription={wCard.transcription}
-              russian={wCard.russian}
-              id={wCard.id}
-              onLiftDelCardId={liftDelCardUp}
-            />
+            <WordCardMini wordCard={wCard} onLiftDelCardId={liftDelCardUp} />
           </Grid>
           // }
         ))}

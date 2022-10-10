@@ -113,6 +113,7 @@ function HeaderAppBar(props) {
                 }}
                 open={Boolean(anchorElNav)}
                 onClose={handleCloseNavMenu}
+                disableEnforceFocus
                 sx={{
                   display: { xs: "block", md: "none" },
                 }}

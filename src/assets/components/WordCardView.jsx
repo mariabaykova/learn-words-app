@@ -1,19 +1,25 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import TrapFocus from "@mui/base/TrapFocus";
+import TrapFocus from "@mui/base/FocusTrap";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import ShowTranslIcon from "@mui/icons-material/ExpandMore";
 import IconButton from "@mui/material/IconButton";
 
+const sxCard = {
+  minWidth: 150,
+  minHeight: 130,
+  display: "flex",
+  justifyContent: "center",
+  textAlign: "center",
+};
+const sxTypography = { mb: 1.5 };
+
 export default function WordCardView(props) {
   const {
-    english,
-    russian,
-    transcription,
+    wordCard,
     showTranslationFlag,
-    id,
     onShowHideTranslation,
     disableAutoFocus = false,
   } = props;
@@ -25,54 +31,35 @@ export default function WordCardView(props) {
   );
   const handleShowTranslation = () => {
     setShowTranslation((prevState) => !prevState);
-    onShowHideTranslation(id);
+    onShowHideTranslation(wordCard.id);
   };
 
   return (
-    <Card
-      sx={{
-        minWidth: 150,
-        minHeight: 130,
-        display: "flex",
-        justifyContent: "center",
-        textAlign: "center",
-      }}
-    >
-      <CardContent sx={{}}>
+    <Card sx={sxCard}>
+      <CardContent>
         <Typography variant="h5" component="div">
-          {english}
+          {wordCard.english}
         </Typography>
         {showTranslation ? (
           <Box component="div">
-            <Typography sx={{ mb: 1.5 }} color="text.secondary">
-              {transcription}
+            <Typography sx={sxTypography} color="text.secondary">
+              {wordCard.transcription}
             </Typography>
-            <Typography variant="body2">{russian}</Typography>
-            {!disableAutoFocus ? (
-              <TrapFocus open>
-                <IconButton aria-label="hide" onClick={handleShowTranslation}>
-                  <ShowTranslIcon sx={{ transform: "rotate(180deg)" }} />
-                </IconButton>
-              </TrapFocus>
-            ) : (
+            <Typography variant="body2">{wordCard.russian}</Typography>
+
+            <TrapFocus open={Boolean(!disableAutoFocus)}>
               <IconButton aria-label="hide" onClick={handleShowTranslation}>
                 <ShowTranslIcon sx={{ transform: "rotate(180deg)" }} />
               </IconButton>
-            )}
+            </TrapFocus>
           </Box>
         ) : (
           <Box component="div">
-            {!disableAutoFocus ? (
-              <TrapFocus open>
-                <IconButton aria-label="show" onClick={handleShowTranslation}>
-                  <ShowTranslIcon />
-                </IconButton>
-              </TrapFocus>
-            ) : (
+            <TrapFocus open={Boolean(!disableAutoFocus)}>
               <IconButton aria-label="show" onClick={handleShowTranslation}>
                 <ShowTranslIcon />
               </IconButton>
-            )}
+            </TrapFocus>
           </Box>
         )}
       </CardContent>

@@ -47,11 +47,10 @@ export default function FlippingCards(props) {
 
   const learnedWordsNumber = learnedWordsList.length || 0;
 
-  // прослушивание документа на нажатие стрелок
+  // прослушивание документа на нажатие стрелок влево-вправо, чтобы стрелками можно было листать список
   React.useEffect(() => {
     const handleClick = (event) => {
       if (event.code === "ArrowLeft") {
-        console.log("left arrow pressed" + event.code);
         // изменяем (-1) состояние, в котором хранится карта, которую сейчас показываем
         setCardToShow((prevCardId) => {
           return prevCardId > 0 ? prevCardId - 1 : 0;
@@ -108,13 +107,10 @@ export default function FlippingCards(props) {
               }}
             >
               <WordCardView
-                english={listOfWords[cardToShow].english}
-                russian={listOfWords[cardToShow].russian}
-                transcription={listOfWords[cardToShow].transcription}
+                wordCard={listOfWords[cardToShow]}
                 showTranslationFlag={showTranslationList.includes(
                   listOfWords[cardToShow].id
                 )}
-                id={listOfWords[cardToShow].id}
                 onShowHideTranslation={handleShowHideTranslation}
                 key={listOfWords[cardToShow].id}
               />
@@ -153,11 +149,7 @@ export default function FlippingCards(props) {
                 key={wCard.id}
               >
                 <WordCardView
-                  english={wCard.english}
-                  transcription={wCard.transcription}
-                  russian={wCard.russian}
-                  tags={wCard.tags}
-                  id={wCard.id}
+                  wordCard={wCard}
                   key={wCard.id}
                   showTranslationFlag={showTranslationList.includes(wCard.id)}
                   onShowHideTranslation={handleShowHideTranslation}
