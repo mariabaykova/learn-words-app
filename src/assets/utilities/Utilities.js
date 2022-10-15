@@ -19,7 +19,7 @@ export default class Utilities {
       return [...arr];
     }
   }
-  static DiffOfArrays(arrA, arrB) {
+  static DiffOfArrays(arrA = [], arrB = []) {
     return arrA.filter((item) => !arrB.includes(item.id));
   }
 }
