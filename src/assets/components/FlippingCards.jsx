@@ -8,7 +8,7 @@ import IconButton from "@mui/material/IconButton";
 import WordCardView from "./WordCardView.jsx";
 import NothingFound from "./NothingFound.jsx";
 import Utilities from "../utilities/Utilities.js";
-import picNoData from "../../noData.jpeg";
+import picNoData from "../../assets/pics/noData.jpeg";
 
 export default function FlippingCards(props) {
   // если ничего не передали, значит считаем список пустым

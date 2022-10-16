@@ -22,6 +22,7 @@ const Train = () => {
 
   return (
     <div>
+      <h1>This page is for tests. Will be removed.</h1>
       <form onSubmit={handleSubmit}>
         <input
           id="first_name"

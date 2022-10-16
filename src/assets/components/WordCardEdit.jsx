@@ -10,6 +10,7 @@ import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
 import { editableFields, emptyFieldMsg } from "../conf/Settings";
 import Validation from "../../assets/utilities/Validation";
+import "@fontsource/roboto/400.css";
 
 const sxMsgBox = {
   minWidth: 150,
@@ -17,6 +18,8 @@ const sxMsgBox = {
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
+  fontSize: "1.2rem",
+  fontFamily: "Roboto",
 };
 
 const sxCardContentBox = {
