@@ -1,11 +1,13 @@
 import * as React from "react";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 
-import HeaderAppBar from "./assets/components/HeaderAppBar";
-import ListOfWords from "./assets/components/ListOfWords";
-import FlippingCards from "./assets/components/FlippingCards";
-// import Train from "./assets/components/Train";
-import ShowMsgPage from "./assets/components/NothingFound";
+import {
+  HeaderAppBar,
+  ListOfWords,
+  FlippingCards,
+  WordCardAdd,
+  NothingFound,
+} from "./assets/components";
 
 // import { listOfWords } from "./assets/data/listOfWords.js";
 import Utilities from "./assets/utilities/Utilities";
@@ -19,15 +21,14 @@ const pages = [
   { menuTitle: "Flip", route: "flip" },
   // { menuTitle: "Train", route: "train" },
 ];
-
 function App() {
+  console.log("App started");
   // добавление карты в список удаленных карт
   function addToDelList(cardId) {
     setCardAvailability((prevState) => {
       return Utilities.PushToArray(prevState, cardId);
     });
   }
-
   // загрузка списка слов
   const [listOfWords, setListOfWords] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
@@ -98,11 +99,15 @@ function App() {
               path="/flip"
               element={<FlippingCards listOfWords={cardsToShow} />}
             />
+            <Route path="/addcard" element={<WordCardAdd />} />
             {/* <Route path="/train" element={<Train />} /> */}
             <Route
               path="*"
               element={
-                <ShowMsgPage title="This page doesn't exist" picture={pic404} />
+                <NothingFound
+                  title="This page doesn't exist"
+                  picture={pic404}
+                />
               }
             />
           </Routes>
