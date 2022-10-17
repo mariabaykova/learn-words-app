@@ -6,6 +6,7 @@ import Utilities from "./assets/utilities/Utilities";
 
 import pic404 from "./assets/pics/404page.jpeg";
 import { lazy } from "react";
+import getServices from "./Api/getServices";
 
 const HeaderAppBar = lazy(() => import("./assets/components/HeaderAppBar"));
 const ListOfWords = lazy(() => import("./assets/components/ListOfWords"));
@@ -32,35 +33,22 @@ function App() {
   const [listOfWords, setListOfWords] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
+
   React.useEffect(() => {
-    fetch(`http://itgirlschool.justmakeit.ru/api/words/`, {
-      method: "GET",
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(
-            `This is an HTTP error: The status is ${response.status}`
-          );
-        }
-        if (response.ok) {
-          console.log("fetch done, response code " + response.status);
-        }
-
-        return response.json();
-      })
-      .then((actualData) => {
-        setListOfWords(actualData);
+    async function getListOfWords() {
+      const getList = await getServices.getListOfWords();
+      if (getList.error) {
+        console.log("error " + getList.error);
+        setError(getList.error);
+        setListOfWords([]);
+      } else if (getList.data) {
+        setListOfWords(getList.data);
         setError(null);
-      })
-      .catch((err) => {
-        setError(err.message);
-        setListOfWords(null);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+      }
+      setLoading(false);
+    }
+    getListOfWords();
   }, []);
-
   // // храним список удаленных в этой сессии карточек в состоянии этого компонента
   const [deletedCardsList, setCardAvailability] = React.useState([]);
 
