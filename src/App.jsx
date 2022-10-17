@@ -13,6 +13,7 @@ const ListOfWords = lazy(() => import("./assets/components/ListOfWords"));
 const FlippingCards = lazy(() => import("./assets/components/FlippingCards"));
 const WordCardAdd = lazy(() => import("./assets/components/WordCardAdd"));
 const NothingFound = lazy(() => import("./assets/components/NothingFound"));
+const Train = lazy(() => import("./assets/components/Train"));
 
 // структура для описания пунктов меню. Если появится новый, вносим заголовок для меню и роут
 // перенести в Settings?
@@ -49,6 +50,7 @@ function App() {
     }
     getListOfWords();
   }, []);
+
   // // храним список удаленных в этой сессии карточек в состоянии этого компонента
   const [deletedCardsList, setCardAvailability] = React.useState([]);
 
@@ -88,7 +90,7 @@ function App() {
                 element={<FlippingCards listOfWords={cardsToShow} />}
               />
               <Route path="/addcard" element={<WordCardAdd />} />
-              {/* <Route path="/train" element={<Train />} /> */}
+              <Route path="/train" element={<Train />} />
               <Route
                 path="*"
                 element={
