@@ -35,20 +35,21 @@ function App() {
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
 
-  React.useEffect(() => {
-    async function getListOfWords() {
-      const getList = await getServices.getListOfWords();
-      if (getList.error) {
-        console.log("error " + getList.error);
-        setError(getList.error);
-        setListOfWords([]);
-      } else if (getList.data) {
-        setListOfWords(getList.data);
-        setError(null);
-      }
-      setLoading(false);
+  async function getListOfWords() {
+    const getList = await getServices.getListOfWords();
+    if (getList.error) {
+      console.log("error " + getList.error);
+      setError(getList.error);
+      setListOfWords([]);
+    } else if (getList.data) {
+      setListOfWords(getList.data);
+      setError(null);
     }
+  }
+
+  React.useEffect(() => {
     getListOfWords();
+    setLoading(false);
   }, []);
 
   // // храним список удаленных в этой сессии карточек в состоянии этого компонента

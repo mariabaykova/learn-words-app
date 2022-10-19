@@ -17,19 +17,29 @@ class postServices {
     const result = {};
     try {
       const response = await axios.post(
-        `http://itgirlschool.justmakeit.ru/api/words/add`,
-        {
-          english: "JavaScript",
-          transcription: "[JavaScript]",
-          russian: "Джава скрипт",
-          tags: "IT",
-          tags_json: '["IT"]',
-        }
+        "https://cors-everywhere.herokuapp.com/http://itgirlschool1.justmakeit.ru/api/words/add",
+        wCard
       );
       result.data = response.data;
     } catch (err) {
       result.error = err.message;
     }
+
+    return result;
+  }
+
+  static async updWordCard(wCard) {
+    const result = {};
+    try {
+      const response = await axios.post(
+        "http://itgirlschool.justmakeit.ru/api/words/" + wCard.id + "/update",
+        wCard
+      );
+      result.data = response.data;
+    } catch (err) {
+      result.error = err.message;
+    }
+
     return result;
   }
 }
