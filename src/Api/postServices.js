@@ -17,7 +17,7 @@ class postServices {
     const result = {};
     try {
       const response = await axios.post(
-        "https://cors-everywhere.herokuapp.com/http://itgirlschool1.justmakeit.ru/api/words/add",
+        "https://cors-everywhere.herokuapp.com/http://itgirlschool.justmakeit.ru/api/words/add",
         wCard
       );
       result.data = response.data;
