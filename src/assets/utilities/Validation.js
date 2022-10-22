@@ -5,6 +5,18 @@ export default class Validation {
     return Boolean(!str.length);
   }
   static isFormatCorrect(str, fieldType) {
-    return str.search(editableFields[fieldType].regexp) === -1 ? false : true;
+    console.log("str, fieldType");
+    console.log(str, fieldType);
+    return !editableFields[fieldType]
+      ? false
+      : str.search(editableFields[fieldType].regexp) === -1
+      ? false
+      : true;
+  }
+  static isEmptyObj(obj) {
+    for (let key in obj) {
+      return false;
+    }
+    return true;
   }
 }

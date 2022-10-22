@@ -5,7 +5,7 @@ class postServices {
     const result = {};
     try {
       const response = await axios.post(
-        `http://itgirlschool.justmakeit.ru/api/words/` + cardId + `/delete`
+        `http://itgirlschool.justmakeit.ru/api/words/${cardId}/delete`
       );
       result.data = response.data;
     } catch (err) {
@@ -32,7 +32,7 @@ class postServices {
     const result = {};
     try {
       const response = await axios.post(
-        "http://itgirlschool.justmakeit.ru/api/words/" + wCard.id + "/update",
+        `http://itgirlschool.justmakeit.ru/api/words/${wCard.id}/update`,
         wCard
       );
       result.data = response.data;

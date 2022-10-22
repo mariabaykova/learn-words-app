@@ -1,6 +1,8 @@
 import * as React from "react";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 
+import CircularProgress from "@mui/material/CircularProgress";
+
 // import { listOfWords } from "./assets/data/listOfWords.js";
 import Utilities from "./assets/utilities/Utilities";
 
@@ -23,7 +25,7 @@ const pages = [
   // { menuTitle: "Train", route: "train" },
 ];
 function App() {
-  console.log("App started");
+  // console.log("App started");
   // добавление карты в список удаленных карт
   function addToDelList(cardId) {
     setCardAvailability((prevState) => {
@@ -38,7 +40,7 @@ function App() {
   async function getListOfWords() {
     const getList = await getServices.getListOfWords();
     if (getList.error) {
-      console.log("error " + getList.error);
+      // console.log("error " + getList.error);
       setError(getList.error);
       setListOfWords([]);
     } else if (getList.data) {
@@ -61,12 +63,22 @@ function App() {
     <BrowserRouter>
       <div>
         <HeaderAppBar pages={pages} />
-        {loading && <div>A moment please, fetching...</div>}
+        {loading && (
+          <div>
+            <CircularProgress color="inherit" />
+          </div>
+        )}
         {error && (
           <div>{`There is a problem while fetching data - ${error}`}</div>
         )}
         {cardsToShow && !loading && (
-          <React.Suspense fallback={<div>Loading...</div>}>
+          <React.Suspense
+            fallback={
+              <div>
+                <CircularProgress color="success" />
+              </div>
+            }
+          >
             <Routes>
               <Route
                 path="/home"

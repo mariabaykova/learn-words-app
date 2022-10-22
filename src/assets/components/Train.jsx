@@ -60,8 +60,8 @@ const Train = () => {
   //   });
   // }, []);
 
-  async function updWordCard(wCard) {
-    const updList = await postServices.updWordCard(wCard);
+  function updWordCard(wCard) {
+    const updList = postServices.updWordCard(wCard);
     console.log("updWordCard just started");
     console.log("updList");
     console.log(updList); // addList.error, addList.data
@@ -70,11 +70,11 @@ const Train = () => {
   // React.useEffect(() => {
   //   updWordCard({
   //     id: "12187",
-  //     english: "thirty three",
+  //     english: "thirty three1",
   //     transcription: "[therti thri]",
   //     russian: "тридцать три",
   //     tags: "numbers",
-  //     tags_json: '["numbers"]',
+  //     //     tags_json: '["numbers"]',
   //   });
   // }, []);
 

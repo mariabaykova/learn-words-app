@@ -6,11 +6,18 @@ import CardContent from "@mui/material/CardContent";
 import SaveIcon from "@mui/icons-material/Save";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DoneIcon from "@mui/icons-material/Done";
+import ErrIcon from "@mui/icons-material/Error";
 import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
+
 import { editableFields, emptyFieldMsg } from "../conf/Settings";
 import Validation from "../../assets/utilities/Validation";
 import "@fontsource/roboto/400.css";
+
+// import getServices from "../../Api/getServices";
+import postServices from "../../Api/postServices";
 
 const sxMsgBox = {
   minWidth: 150,
@@ -40,39 +47,56 @@ const sxCard = {
 
 const sxCardActions = { display: "flex", justifyContent: "space-between" };
 
+// настройка всплывающего сообщения об ошибке при отправке запроса
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+const { vertical, horizontal } = { vertical: "top", horizontal: "center" };
+
 export default function WordCardEdit(props) {
   const { wordCard, onLiftDelCardId } = props;
-  //   вводим состояние - "изменения сохранены"
-  const [saved, setSaved] = React.useState(false);
-  // изменения сохранены при клике на иконку "сохранить" SaveIcon
-  const handleSaveClick = (e) => {
+
+  //   вводим состояние - 1="изменения сохранены", 2="ошибка при сохранении изменений", 0="не сохранены"( по дефолту = 0 )
+  const [saved, setSaved] = React.useState(0);
+  // при клике на иконку "сохранить" SaveIcon происходит валидация формы и отправка запроса на сервер
+  const handleSaveClick = async (e) => {
     e.preventDefault(); // 👈️ prevent page refresh
 
     // проверка корректности заполнения полей + сразу обновление состояния с ошибками
     setInputErrorsState((prevState) => {
-      let errInd = 0;
-      for (let key in prevState) {
-        prevState[key] = "";
+      for (let key in inputsState) {
+        delete prevState[key];
         if (Validation.isEmpty(inputsState[key])) {
           prevState[key] = emptyFieldMsg;
-          errInd++;
         } else if (!Validation.isFormatCorrect(inputsState[key], key)) {
           prevState[key] = editableFields[key].regexpMsg;
-          errInd++;
         }
       }
-      if (!errInd) {
-        setSaved((prevState) => !prevState);
-      }
-
+      // если нет ошибок в заполнении полей
       return { ...prevState };
     });
+
+    if (Validation.isEmptyObj(inputErrorsState)) {
+      //нет ошибок в заполнении полей => отправляем запрос на изменение карточки
+      const updList = await postServices.updWordCard(inputsState);
+      updList.error ? setSaved(2) : setSaved(1);
+    }
+  };
+
+  const handleCloseError = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setSaved(0);
   };
 
   // вводим состояние "карточка удалена"
+  // сделать "не удалена", "удалена" и "ошибка при удалении"
   const [isDeleted, setDeleted] = React.useState(false);
   // считаем, что удалена при клике на DeleteIcon
   const handleDeleteClick = () => {
+    // здесь дернуть апи с запросом на удаление и обработать результат выполнения
     setDeleted(true);
     onLiftDelCardId(wordCard.id);
   };
@@ -80,17 +104,15 @@ export default function WordCardEdit(props) {
   // состояние редактируемых полей
 
   const [inputsState, setInputsState] = React.useState({
-    [editableFields.englishWord.id]: wordCard.english,
+    [editableFields.english.id]: wordCard.english,
     [editableFields.transcription.id]: wordCard.transcription,
-    [editableFields.russianWord.id]: wordCard.russian,
+    [editableFields.russian.id]: wordCard.russian,
+    [editableFields.tags.id]: wordCard.tags,
+    id: wordCard.id,
   });
 
   // состояние ошибок в редактируемых полях, сначала их нет
-  const [inputErrorsState, setInputErrorsState] = React.useState({
-    [editableFields.englishWord.id]: "",
-    [editableFields.transcription.id]: "",
-    [editableFields.russianWord.id]: "",
-  });
+  const [inputErrorsState, setInputErrorsState] = React.useState({});
 
   const handleInputChange = (e) => {
     const id = e.target.id;
@@ -103,49 +125,91 @@ export default function WordCardEdit(props) {
   };
 
   return (
-    <Card sx={sxCard} component="form" onSubmit={handleSaveClick}>
+    <Card
+      sx={sxCard}
+      component="form"
+      name="word-card"
+      onSubmit={handleSaveClick}
+    >
       {isDeleted ? (
         <Box sx={sxMsgBox}>Card has been removed</Box>
       ) : (
         <CardContent>
           <Box sx={sxCardContentBox} autoComplete="off">
+            {/* <TextField id={"id"} value={wordCard.id} sx={{ display: "none" }} /> */}
             <TextField
-              label={editableFields.englishWord.label}
-              variant={editableFields.englishWord.variant}
-              id={editableFields.englishWord.id}
-              size={editableFields.englishWord.size}
+              disabled={saved === 2 || saved === 1}
+              label={editableFields.english.label}
+              id={editableFields.english.id}
+              helperText={inputErrorsState[editableFields.english.id]}
               onChange={handleInputChange}
-              value={inputsState.englishWord}
-              error={Boolean(inputErrorsState.englishWord.length)}
-              helperText={inputErrorsState.englishWord}
+              value={inputsState[editableFields.english.id]}
+              error={inputErrorsState[editableFields.english.id] ? true : false}
+              variant="filled"
+              size="small"
             />
             <TextField
+              disabled={saved === 2 || saved === 1}
               label={editableFields.transcription.label}
-              variant={editableFields.transcription.variant}
               id={editableFields.transcription.id}
-              size={editableFields.transcription.size}
               onChange={handleInputChange}
-              value={inputsState.transcription}
-              error={Boolean(inputErrorsState.transcription.length)}
-              helperText={inputErrorsState.transcription}
+              value={inputsState[editableFields.transcription.id]}
+              error={
+                inputErrorsState[editableFields.transcription.id] ? true : false
+              }
+              helperText={inputErrorsState[editableFields.transcription.id]}
+              variant="filled"
+              size="small"
             />
             <TextField
-              label={editableFields.russianWord.label}
-              variant={editableFields.russianWord.variant}
-              id={editableFields.russianWord.id}
-              size={editableFields.russianWord.size}
+              disabled={saved === 2 || saved === 1}
+              label={editableFields.russian.label}
+              id={editableFields.russian.id}
               onChange={handleInputChange}
-              value={inputsState.russianWord}
-              error={Boolean(inputErrorsState.russianWord.length)}
-              helperText={inputErrorsState.russianWord}
+              value={inputsState[editableFields.russian.id]}
+              error={inputErrorsState[editableFields.russian.id] ? true : false}
+              helperText={inputErrorsState[editableFields.russian.id]}
+              variant="filled"
+              size="small"
+            />
+            <TextField
+              disabled={saved === 2 || saved === 1}
+              label={editableFields.tags.label}
+              id={editableFields.tags.id}
+              helperText={inputErrorsState[editableFields.tags.id]}
+              onChange={handleInputChange}
+              value={inputsState[editableFields.tags.id]}
+              error={inputErrorsState[editableFields.tags.id] ? true : false}
+              variant="filled"
+              size="small"
             />
           </Box>
         </CardContent>
       )}
       {!isDeleted && (
         <CardActions sx={sxCardActions}>
-          {saved ? (
+          {saved === 1 ? (
             <DoneIcon />
+          ) : saved === 2 ? (
+            <React.Fragment>
+              <Snackbar
+                open={saved === 2}
+                autoHideDuration={6000}
+                onClose={handleCloseError}
+                anchorOrigin={{ vertical, horizontal }}
+                key={vertical + horizontal}
+              >
+                <Alert
+                  onClose={handleCloseError}
+                  severity="error"
+                  sx={{ width: "100%" }}
+                >
+                  Network problem, try again later!
+                </Alert>
+              </Snackbar>
+
+              <ErrIcon />
+            </React.Fragment>
           ) : (
             // кнопка - сохранить изменения
             <IconButton aria-label="save" type="submit">

@@ -1,28 +1,33 @@
 // для формы редактирования слова - параметры для настройки полей ввода и их проверки
 export const editableFields = {
-  englishWord: {
+  id: {
+    id: "id",
+    regexp: "^[0-9]*$",
+    regexpMsg: "Id should be a number",
+  },
+  english: {
     label: "English",
-    variant: "filled",
-    id: "englishWord",
-    size: "small",
+    id: "english",
     regexp: "^[a-zA-Z][a-zA-Z- ]*[a-zA-Z]$",
     regexpMsg: "Use just english words, spaces and hyphen",
   },
   transcription: {
     label: "Transcription",
-    variant: "filled",
     id: "transcription",
-    size: "small",
     regexp: "^[^0-9]*$",
     regexpMsg: "Doesn't look like transcription",
   },
-  russianWord: {
+  russian: {
     label: "Russian",
-    variant: "filled",
-    id: "russianWord",
-    size: "small",
+    id: "russian",
     regexp: "^[а-яА-Я][а-яА-Я- ]*[а-яА-Я]$",
     regexpMsg: "Use just russian words, spaces and hyphen",
+  },
+  tags: {
+    label: "Tags",
+    id: "tags",
+    regexp: "^[a-zA-Z][a-zA-Z- ]*[a-zA-Z]$",
+    regexpMsg: "Use just english words, spaces and hyphen",
   },
 };
 

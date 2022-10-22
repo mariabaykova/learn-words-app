@@ -7,7 +7,6 @@ class getServices {
       const response = await axios.get(
         `http://itgirlschool.justmakeit.ru/api/words/`
       );
-      // console.log("getListOfWords just fetched");
       result.data = response.data;
     } catch (err) {
       result.error = err.message;
@@ -18,7 +17,7 @@ class getServices {
     const result = {};
     try {
       const response = await axios.get(
-        `http://itgirlschool.justmakeit.ru/api/words/` + cardId
+        `http://itgirlschool.justmakeit.ru/api/words/${cardId}`
       );
       result.data = response.data;
     } catch (err) {
