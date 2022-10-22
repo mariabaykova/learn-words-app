@@ -14,7 +14,7 @@ import Backdrop from "@mui/material/Backdrop";
 import WordCardView from "./WordCardView";
 import WordCardEdit from "./WordCardEdit";
 
-const style = {
+const sxBox = {
   position: "absolute",
   top: "50%",
   left: "50%",
@@ -25,10 +25,26 @@ const style = {
   borderRadius: 3,
   boxShadow: 24,
 };
+const sxCard = {
+  minWidth: 150,
+  minHeight: 152,
+  "&:hover": {
+    mt: -0.5,
+    mx: -0.5,
+    boxShadow: 24,
+    zIndex: "tooltip",
+    cursor: "pointer",
+  },
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "space-between",
+};
+const sxCardActions = { display: "flex", justifyContent: "space-between" };
+const sxCardContent = { display: "flex", justifyContent: "center" };
 
 export default function WordCardMini(props) {
   const [editMode, setEditMode] = React.useState(false);
-  const { english, russian, transcription, id, onLiftDelCardId } = props;
+  const { wordCard, onLiftDelCardId } = props;
 
   // состояние open отвечает за открытие модального окна, если true - открыть окно
   const [open, setOpen] = React.useState(false);
@@ -41,8 +57,8 @@ export default function WordCardMini(props) {
   };
   // при закрытии модального окна еще и выходим из состояния редактирования
   const handleCloseWin = () => {
-    setOpen(false);
     setEditMode(false);
+    setOpen(false);
   };
 
   // передаем в компонент для просмотра карточки, что при показе и скрытии перевода не нужно передавать в текущий компонент id карточки, здесь нам это не нужно
@@ -56,29 +72,13 @@ export default function WordCardMini(props) {
 
   return (
     <div>
-      <Card
-        sx={{
-          minWidth: 150,
-          minHeight: 152,
-          "&:hover": {
-            mt: -0.5,
-            mx: -0.5,
-            boxShadow: 24,
-
-            zIndex: "tooltip",
-            cursor: "pointer",
-          },
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-        }}
-      >
-        <CardContent sx={{ display: "flex", justifyContent: "center" }}>
+      <Card sx={sxCard}>
+        <CardContent sx={sxCardContent}>
           <Typography variant="h5" component="div">
-            {english}
+            {wordCard.english}
           </Typography>
         </CardContent>
-        <CardActions sx={{ display: "flex", justifyContent: "space-between" }}>
+        <CardActions sx={sxCardActions}>
           <IconButton aria-label="edit" onClick={handleEditClick}>
             <EditIcon />
           </IconButton>
@@ -101,23 +101,17 @@ export default function WordCardMini(props) {
         }}
       >
         <Fade in={open}>
-          <Box sx={style}>
+          <Box sx={sxBox}>
             {/* тут проверяем, что нужно показать в окне: форму просмотра или форму редактирования */}
             {editMode ? (
               <WordCardEdit
-                english={english}
-                russian={russian}
-                transcription={transcription}
-                id={id}
+                wordCard={wordCard}
                 onLiftDelCardId={liftDelCardUp}
               />
             ) : (
               <WordCardView
-                english={english}
-                russian={russian}
-                transcription={transcription}
+                wordCard={wordCard}
                 showTranslationFlag={false}
-                id={id}
                 onShowHideTranslation={handleShowHideTranslation}
               />
             )}

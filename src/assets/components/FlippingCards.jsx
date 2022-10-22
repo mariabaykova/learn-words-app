@@ -8,7 +8,7 @@ import IconButton from "@mui/material/IconButton";
 import WordCardView from "./WordCardView.jsx";
 import NothingFound from "./NothingFound.jsx";
 import Utilities from "../utilities/Utilities.js";
-import picNoData from "../../noData.jpeg";
+import picNoData from "../../assets/pics/noData.jpeg";
 
 export default function FlippingCards(props) {
   // если ничего не передали, значит считаем список пустым
@@ -47,11 +47,10 @@ export default function FlippingCards(props) {
 
   const learnedWordsNumber = learnedWordsList.length || 0;
 
-  // прослушивание документа на нажатие стрелок
+  // прослушивание документа на нажатие стрелок влево-вправо, чтобы стрелками можно было листать список
   React.useEffect(() => {
     const handleClick = (event) => {
       if (event.code === "ArrowLeft") {
-        console.log("left arrow pressed" + event.code);
         // изменяем (-1) состояние, в котором хранится карта, которую сейчас показываем
         setCardToShow((prevCardId) => {
           return prevCardId > 0 ? prevCardId - 1 : 0;
@@ -71,6 +70,30 @@ export default function FlippingCards(props) {
       document.body.removeEventListener("keydown", handleClick);
     };
   });
+
+  const sxBoxWrap = {
+    justifyContent: "center",
+    alignItems: "center",
+    columnGap: 3,
+    padding: { xs: 1, sm: 4 },
+    display: { xs: "none", sm: "flex" },
+  };
+
+  const sxBoxSlider = {
+    scrollSnapType: "x mandatory",
+    webkitOwerflowScrolling: "touch",
+    overflowX: "scroll",
+    display: { xs: "flex", sm: "none" },
+  };
+  const sxBoxSlide = {
+    scrollSnapAlign: "start",
+    minWidth: "99%",
+    height: "99%",
+    bgcolor: "background.paper",
+    border: "1px solid gray",
+    borderRadius: 3,
+    boxShadow: 20,
+  };
   return (
     <>
       {!listLength ? (
@@ -85,15 +108,7 @@ export default function FlippingCards(props) {
             You've learned <strong>{learnedWordsNumber}</strong> words!
           </Alert>
 
-          <Box
-            sx={{
-              justifyContent: "center",
-              alignItems: "center",
-              columnGap: 3,
-              padding: { xs: 1, sm: 4 },
-              display: { xs: "none", sm: "flex" },
-            }}
-          >
+          <Box sx={sxBoxWrap}>
             <IconButton
               aria-label="back"
               sx={{ visibility: cardToShow > 0 ? "visible" : "hidden" }}
@@ -108,13 +123,10 @@ export default function FlippingCards(props) {
               }}
             >
               <WordCardView
-                english={listOfWords[cardToShow].english}
-                russian={listOfWords[cardToShow].russian}
-                transcription={listOfWords[cardToShow].transcription}
+                wordCard={listOfWords[cardToShow]}
                 showTranslationFlag={showTranslationList.includes(
                   listOfWords[cardToShow].id
                 )}
-                id={listOfWords[cardToShow].id}
                 onShowHideTranslation={handleShowHideTranslation}
                 key={listOfWords[cardToShow].id}
               />
@@ -131,33 +143,11 @@ export default function FlippingCards(props) {
             </IconButton>
           </Box>
           {/* для маленьких экранов - пролистывание смахиванием */}
-          <Box
-            sx={{
-              scrollSnapType: "x mandatory",
-              webkitOwerflowScrolling: "touch",
-              overflowX: "scroll",
-              display: { xs: "flex", sm: "none" },
-            }}
-          >
+          <Box sx={sxBoxSlider}>
             {listOfWords.map((wCard, index) => (
-              <Box
-                sx={{
-                  scrollSnapAlign: "start",
-                  minWidth: "99%",
-                  height: "99%",
-                  bgcolor: "background.paper",
-                  border: "1px solid gray",
-                  borderRadius: 3,
-                  boxShadow: 20,
-                }}
-                key={wCard.id}
-              >
+              <Box sx={sxBoxSlide} key={wCard.id}>
                 <WordCardView
-                  english={wCard.english}
-                  transcription={wCard.transcription}
-                  russian={wCard.russian}
-                  tags={wCard.tags}
-                  id={wCard.id}
+                  wordCard={wCard}
                   key={wCard.id}
                   showTranslationFlag={showTranslationList.includes(wCard.id)}
                   onShowHideTranslation={handleShowHideTranslation}

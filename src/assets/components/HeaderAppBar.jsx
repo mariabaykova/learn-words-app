@@ -44,6 +44,38 @@ function HeaderAppBar(props) {
     );
   }
 
+  const sxSmallScreenTitle = {
+    display: { xs: "flex", md: "none" },
+    flexGrow: 0,
+    fontFamily: "monospace",
+    fontWeight: 700,
+    letterSpacing: ".2rem",
+    color: "inherit",
+    textDecoration: "none",
+    alignSelf: "right",
+    textAlign: "right",
+    mr: 0,
+  };
+  const sxBigScreenTitle = {
+    mr: 2,
+    display: { xs: "none", md: "flex" },
+    fontFamily: "monospace",
+    fontWeight: 700,
+    letterSpacing: ".3rem",
+    color: "inherit",
+    textDecoration: "none",
+  };
+
+  const sxSchoolIconSmall = {
+    display: { xs: "flex", sm: "flex", md: "none" },
+    mr: 1,
+    flexGrow: 0,
+    justifyContent: "right",
+  };
+  const sxSchoolIconBig = {
+    display: { xs: "none", md: "flex" },
+    mr: 1,
+  };
   return (
     <HideOnScroll>
       <AppBar
@@ -59,26 +91,13 @@ function HeaderAppBar(props) {
               display: "flex",
             }}
           >
-            <SchoolIcon
-              sx={{
-                display: { xs: "none", md: "flex" },
-                mr: 1,
-              }}
-            />
+            <SchoolIcon sx={sxSchoolIconBig} />
             <Typography
               variant="h6"
               noWrap
               component={RouterLink}
               to="/"
-              sx={{
-                mr: 2,
-                display: { xs: "none", md: "flex" },
-                fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: "inherit",
-                textDecoration: "none",
-              }}
+              sx={sxBigScreenTitle}
             >
               LEARN WORDS
             </Typography>
@@ -113,6 +132,7 @@ function HeaderAppBar(props) {
                 }}
                 open={Boolean(anchorElNav)}
                 onClose={handleCloseNavMenu}
+                disableEnforceFocus
                 sx={{
                   display: { xs: "block", md: "none" },
                 }}
@@ -129,31 +149,13 @@ function HeaderAppBar(props) {
                 ))}
               </Menu>
             </Box>
-            <SchoolIcon
-              sx={{
-                display: { xs: "flex", sm: "flex", md: "none" },
-                mr: 1,
-                flexGrow: 0,
-                justifyContent: "right",
-              }}
-            />
+            <SchoolIcon sx={sxSchoolIconSmall} />
             {/* заголовок для маленьких экранов */}
             <Typography
               variant="h5"
               component={RouterLink}
               to="/"
-              sx={{
-                display: { xs: "flex", md: "none" },
-                flexGrow: 0,
-                fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".2rem",
-                color: "inherit",
-                textDecoration: "none",
-                alignSelf: "right",
-                textAlign: "right",
-                mr: 0,
-              }}
+              sx={sxSmallScreenTitle}
             >
               LEARN WORDS
             </Typography>
