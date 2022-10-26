@@ -44,7 +44,7 @@ const sxCardContent = { display: "flex", justifyContent: "center" };
 
 export default function WordCardMini(props) {
   const [editMode, setEditMode] = React.useState(false);
-  const { wordCard, onLiftDelCardId } = props;
+  const { wordCard } = props;
 
   // состояние open отвечает за открытие модального окна, если true - открыть окно
   const [open, setOpen] = React.useState(false);
@@ -65,10 +65,6 @@ export default function WordCardMini(props) {
   const handleShowHideTranslation = () => {
     return;
   };
-
-  function liftDelCardUp(cardId) {
-    onLiftDelCardId(cardId);
-  }
 
   return (
     <div>
@@ -104,10 +100,7 @@ export default function WordCardMini(props) {
           <Box sx={sxBox}>
             {/* тут проверяем, что нужно показать в окне: форму просмотра или форму редактирования */}
             {editMode ? (
-              <WordCardEdit
-                wordCard={wordCard}
-                onLiftDelCardId={liftDelCardUp}
-              />
+              <WordCardEdit wordCard={wordCard} />
             ) : (
               <WordCardView
                 wordCard={wordCard}
