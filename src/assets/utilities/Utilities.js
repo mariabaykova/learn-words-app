@@ -6,7 +6,7 @@ export default class Utilities {
     return [...arr];
   }
   static DelElemFromArray(arr = [], elem) {
-    return [...arr.filter((item) => item !== elem)];
+    return [arr.filter((item) => item !== elem)];
   }
 
   static UpdateArray(arr, elem) {

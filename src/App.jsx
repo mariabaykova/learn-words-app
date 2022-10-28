@@ -71,16 +71,10 @@ function App() {
               </div>
             }
           >
-            <wordsContext.Provider value={listOfWords}>
+            <wordsContext.Provider value={[...listOfWords]}>
               <Routes>
-                <Route
-                  path="/home"
-                  element={<ListOfWords listOfWords={listOfWords} />}
-                />
-                <Route
-                  path="/"
-                  element={<ListOfWords listOfWords={listOfWords} />}
-                />
+                <Route path="/home" element={<ListOfWords />} />
+                <Route path="/" element={<ListOfWords />} />
                 <Route
                   path="/flip"
                   element={<FlippingCards listOfWords={listOfWords} />}

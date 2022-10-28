@@ -91,9 +91,6 @@ export default function WordCardEdit(props) {
       if (updList.error) {
         setSaved(2);
       } else {
-        // assignListOfWords(
-        //   Utilities.UpdateArrayElem(listOfWords, wordCard, inputsState)
-        // );
         listOfWords = [
           ...Utilities.UpdateArrayElem(listOfWords, wordCard, inputsState),
         ];
@@ -117,7 +114,6 @@ export default function WordCardEdit(props) {
     // здесь дернуть апи с запросом на удаление и обработать результат выполнения
     setDeleted(true);
     // изменить список слов для показа
-    // assignListOfWords(Utilities.DelElemFromArray(listOfWords, wordCard));
     listOfWords = [...Utilities.DelElemFromArray(listOfWords, wordCard)];
   };
 
