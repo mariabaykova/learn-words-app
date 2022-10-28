@@ -12,7 +12,7 @@ import TextField from "@mui/material/TextField";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 
-import { WordsContext } from "./Context";
+import wordsContext from "./Context";
 
 import { editableFields, emptyFieldMsg } from "../conf/Settings";
 import Utilities from "../utilities/Utilities";
@@ -59,7 +59,10 @@ const { vertical, horizontal } = { vertical: "top", horizontal: "center" };
 export default function WordCardEdit(props) {
   const { wordCard } = props;
 
-  const { listOfWords, assignListOfWords } = React.useContext(WordsContext);
+  // const { listOfWords, assignListOfWords } = React.useContext(WordsContext);
+  let listOfWords = React.useContext(wordsContext);
+  console.log("listOfWords");
+  console.log(listOfWords);
 
   //   вводим состояние - 1="изменения сохранены", 2="ошибка при сохранении изменений", 0="не сохранены"( по дефолту = 0 )
   const [saved, setSaved] = React.useState(0);
@@ -88,9 +91,9 @@ export default function WordCardEdit(props) {
       if (updList.error) {
         setSaved(2);
       } else {
-        assignListOfWords(
-          Utilities.UpdateArrayElem(listOfWords, wordCard, inputsState)
-        );
+        listOfWords = [
+          ...Utilities.UpdateArrayElem(listOfWords, wordCard, inputsState),
+        ];
         setSaved(1);
       }
     }
@@ -111,7 +114,7 @@ export default function WordCardEdit(props) {
     // здесь дернуть апи с запросом на удаление и обработать результат выполнения
     setDeleted(true);
     // изменить список слов для показа
-    assignListOfWords(Utilities.DelElemFromArray(listOfWords, wordCard));
+    listOfWords = [...Utilities.DelElemFromArray(listOfWords, wordCard)];
   };
 
   // состояние редактируемых полей

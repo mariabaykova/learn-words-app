@@ -1,18 +1,6 @@
-import React, { useState } from "react";
+import { createContext } from "react";
 
-const WordsContext = React.createContext();
+// здесь будет храниться список слов, пока он пустой
+const wordsContext = createContext([]);
 
-function WordsContextProvider(props) {
-  const [listOfWords, setListOfWords] = useState([]);
-
-  function assignListOfWords(newList) {
-    setListOfWords([...newList]);
-  }
-
-  return (
-    <WordsContext.Provider value={{ listOfWords, assignListOfWords }}>
-      {props.children}
-    </WordsContext.Provider>
-  );
-}
-export { WordsContextProvider, WordsContext };
+export default wordsContext;

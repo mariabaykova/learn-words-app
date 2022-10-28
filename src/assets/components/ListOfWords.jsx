@@ -4,9 +4,15 @@ import Grid from "@mui/material/Grid";
 
 import WordCardMini from "./WordCardMini.jsx";
 
-export default function ListOfWords(props) {
-  const { listOfWords = [] } = props;
+import wordsContext from "./Context.jsx";
 
+export default function ListOfWords() {
+  // const { listOfWords = [] } = props;
+  console.log("wordsContext");
+  console.log(wordsContext);
+  const listOfWords = React.useContext(wordsContext);
+  console.log("function ListOfWords(): listOfWords ");
+  console.log(listOfWords);
   return (
     <Box
       sx={{

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 
-import { WordsContext } from "./assets/components/Context";
+import wordsContext from "./assets/components/Context";
 
 import CircularProgress from "@mui/material/CircularProgress";
 
@@ -24,7 +24,11 @@ const pages = [
   // { menuTitle: "Train", route: "train" },
 ];
 function App() {
-  const { listOfWords, assignListOfWords } = React.useContext(WordsContext);
+  // const { listOfWords, assignListOfWords } = React.useContext(WordsContext);
+  // const { listOfWordsContext } = React.useContext(WordsContext);
+
+  const [listOfWords, setListOfWords] = React.useState(wordsContext);
+
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
 
@@ -32,15 +36,18 @@ function App() {
     const getList = await getServices.getListOfWords();
     if (getList.error) {
       setError(getList.error);
-      assignListOfWords([]);
+      setListOfWords([]);
+      // assignListOfWords([]);
     } else if (getList.data) {
-      assignListOfWords(getList.data);
+      // assignListOfWords(getList.data);
+      setListOfWords(getList.data);
       setError(null);
     }
     setLoading(false);
   }
 
   React.useEffect(() => {
+    console.log("запрос на сервер списка слов");
     getListOfWords();
   }, []);
 
@@ -64,31 +71,27 @@ function App() {
               </div>
             }
           >
-            <Routes>
-              <Route
-                path="/home"
-                element={<ListOfWords listOfWords={listOfWords} />}
-              />
-              <Route
-                path="/"
-                element={<ListOfWords listOfWords={listOfWords} />}
-              />
-              <Route
-                path="/flip"
-                element={<FlippingCards listOfWords={listOfWords} />}
-              />
-              <Route path="/addcard" element={<WordCardAdd />} />
-              <Route path="/train" element={<Train />} />
-              <Route
-                path="*"
-                element={
-                  <NothingFound
-                    title="This page doesn't exist"
-                    picture={pic404}
-                  />
-                }
-              />
-            </Routes>
+            <wordsContext.Provider value={[...listOfWords]}>
+              <Routes>
+                <Route path="/home" element={<ListOfWords />} />
+                <Route path="/" element={<ListOfWords />} />
+                <Route
+                  path="/flip"
+                  element={<FlippingCards listOfWords={listOfWords} />}
+                />
+                <Route path="/addcard" element={<WordCardAdd />} />
+                <Route path="/train" element={<Train />} />
+                <Route
+                  path="*"
+                  element={
+                    <NothingFound
+                      title="This page doesn't exist"
+                      picture={pic404}
+                    />
+                  }
+                />
+              </Routes>
+            </wordsContext.Provider>
           </React.Suspense>
         )}
       </div>
