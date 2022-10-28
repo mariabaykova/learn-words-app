@@ -12,7 +12,10 @@ import TextField from "@mui/material/TextField";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 
+import { WordsContext } from "./Context";
+
 import { editableFields, emptyFieldMsg } from "../conf/Settings";
+import Utilities from "../utilities/Utilities";
 import Validation from "../../assets/utilities/Validation";
 import "@fontsource/roboto/400.css";
 
@@ -54,7 +57,9 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 const { vertical, horizontal } = { vertical: "top", horizontal: "center" };
 
 export default function WordCardEdit(props) {
-  const { wordCard, onLiftDelCardId } = props;
+  const { wordCard } = props;
+
+  const { listOfWords, assignListOfWords } = React.useContext(WordsContext);
 
   //   вводим состояние - 1="изменения сохранены", 2="ошибка при сохранении изменений", 0="не сохранены"( по дефолту = 0 )
   const [saved, setSaved] = React.useState(0);
@@ -79,7 +84,15 @@ export default function WordCardEdit(props) {
     if (Validation.isEmptyObj(inputErrorsState)) {
       //нет ошибок в заполнении полей => отправляем запрос на изменение карточки
       const updList = await postServices.updWordCard(inputsState);
-      updList.error ? setSaved(2) : setSaved(1);
+
+      if (updList.error) {
+        setSaved(2);
+      } else {
+        assignListOfWords(
+          Utilities.UpdateArrayElem(listOfWords, wordCard, inputsState)
+        );
+        setSaved(1);
+      }
     }
   };
 
@@ -87,7 +100,6 @@ export default function WordCardEdit(props) {
     if (reason === "clickaway") {
       return;
     }
-
     setSaved(0);
   };
 
@@ -98,7 +110,8 @@ export default function WordCardEdit(props) {
   const handleDeleteClick = () => {
     // здесь дернуть апи с запросом на удаление и обработать результат выполнения
     setDeleted(true);
-    onLiftDelCardId(wordCard.id);
+    // изменить список слов для показа
+    assignListOfWords(Utilities.DelElemFromArray(listOfWords, wordCard));
   };
 
   // состояние редактируемых полей

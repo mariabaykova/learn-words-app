@@ -1,10 +1,9 @@
 import * as React from "react";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 
-import CircularProgress from "@mui/material/CircularProgress";
+import { WordsContext } from "./assets/components/Context";
 
-// import { listOfWords } from "./assets/data/listOfWords.js";
-import Utilities from "./assets/utilities/Utilities";
+import CircularProgress from "@mui/material/CircularProgress";
 
 import pic404 from "./assets/pics/404page.jpeg";
 import { lazy } from "react";
@@ -25,40 +24,26 @@ const pages = [
   // { menuTitle: "Train", route: "train" },
 ];
 function App() {
-  // console.log("App started");
-  // добавление карты в список удаленных карт
-  function addToDelList(cardId) {
-    setCardAvailability((prevState) => {
-      return Utilities.PushToArray(prevState, cardId);
-    });
-  }
-  // загрузка списка слов
-  const [listOfWords, setListOfWords] = React.useState([]);
+  const { listOfWords, assignListOfWords } = React.useContext(WordsContext);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
 
   async function getListOfWords() {
     const getList = await getServices.getListOfWords();
     if (getList.error) {
-      // console.log("error " + getList.error);
       setError(getList.error);
-      setListOfWords([]);
+      assignListOfWords([]);
     } else if (getList.data) {
-      setListOfWords(getList.data);
+      assignListOfWords(getList.data);
       setError(null);
     }
+    setLoading(false);
   }
 
   React.useEffect(() => {
     getListOfWords();
-    setLoading(false);
   }, []);
 
-  // // храним список удаленных в этой сессии карточек в состоянии этого компонента
-  const [deletedCardsList, setCardAvailability] = React.useState([]);
-
-  // // какие карточки нужно показать
-  const cardsToShow = Utilities.DiffOfArrays(listOfWords, deletedCardsList);
   return (
     <BrowserRouter>
       <div>
@@ -71,7 +56,7 @@ function App() {
         {error && (
           <div>{`There is a problem while fetching data - ${error}`}</div>
         )}
-        {cardsToShow && !loading && (
+        {listOfWords && !loading && (
           <React.Suspense
             fallback={
               <div>
@@ -82,25 +67,15 @@ function App() {
             <Routes>
               <Route
                 path="/home"
-                element={
-                  <ListOfWords
-                    listOfWords={cardsToShow}
-                    onLiftDelCardId={addToDelList}
-                  />
-                }
+                element={<ListOfWords listOfWords={listOfWords} />}
               />
               <Route
                 path="/"
-                element={
-                  <ListOfWords
-                    listOfWords={cardsToShow}
-                    onLiftDelCardId={addToDelList}
-                  />
-                }
+                element={<ListOfWords listOfWords={listOfWords} />}
               />
               <Route
                 path="/flip"
-                element={<FlippingCards listOfWords={cardsToShow} />}
+                element={<FlippingCards listOfWords={listOfWords} />}
               />
               <Route path="/addcard" element={<WordCardAdd />} />
               <Route path="/train" element={<Train />} />

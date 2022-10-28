@@ -5,11 +5,7 @@ import Grid from "@mui/material/Grid";
 import WordCardMini from "./WordCardMini.jsx";
 
 export default function ListOfWords(props) {
-  const { listOfWords = [], onLiftDelCardId } = props;
-
-  function liftDelCardUp(cardId) {
-    onLiftDelCardId(cardId);
-  }
+  const { listOfWords = [] } = props;
 
   return (
     <Box
@@ -27,7 +23,7 @@ export default function ListOfWords(props) {
       >
         {listOfWords.map((wCard, index) => (
           <Grid item xs={6} sm={4} md={2} key={index}>
-            <WordCardMini wordCard={wCard} onLiftDelCardId={liftDelCardUp} />
+            <WordCardMini wordCard={wCard} />
           </Grid>
           // }
         ))}
