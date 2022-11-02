@@ -1,11 +1,15 @@
 import * as React from "react";
+import { useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 
 import WordCardMini from "./WordCardMini.jsx";
 
-export default function ListOfWords(props) {
-  const { listOfWords = [] } = props;
+export default function ListOfWords() {
+  const { listOfWords = [] } = useSelector((state) => state.listOfWords);
+
+  console.log("listOfWords 1");
+  console.log(listOfWords);
 
   return (
     <Box

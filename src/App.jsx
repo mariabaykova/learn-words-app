@@ -1,10 +1,9 @@
 import * as React from "react";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
-
-import { WordsContext } from "./assets/components/Context";
+import { useDispatch, useSelector } from "react-redux";
+import { addWordsFromDBAction } from "./store/wordsReducer";
 
 import CircularProgress from "@mui/material/CircularProgress";
-
 import pic404 from "./assets/pics/404page.jpeg";
 import { lazy } from "react";
 import getServices from "./Api/getServices";
@@ -24,20 +23,29 @@ const pages = [
   // { menuTitle: "Train", route: "train" },
 ];
 function App() {
-  const { listOfWords, assignListOfWords } = React.useContext(WordsContext);
+  // const { listOfWords, assignListOfWords } = React.useContext(WordsContext);
+  // запрос текущего состояния списка слов из стейта
+  const listOfWords = useSelector((state) => state.listOfWords);
+
+  console.log("listOfWords");
+  console.log(listOfWords);
+
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
+
+  const dispatch = useDispatch();
 
   async function getListOfWords() {
     const getList = await getServices.getListOfWords();
     if (getList.error) {
+      dispatch(addWordsFromDBAction([]));
       setError(getList.error);
-      assignListOfWords([]);
+      setLoading(false);
     } else if (getList.data) {
-      assignListOfWords(getList.data);
+      dispatch(addWordsFromDBAction(getList.data));
       setError(null);
+      setLoading(false);
     }
-    setLoading(false);
   }
 
   React.useEffect(() => {
@@ -65,18 +73,9 @@ function App() {
             }
           >
             <Routes>
-              <Route
-                path="/home"
-                element={<ListOfWords listOfWords={listOfWords} />}
-              />
-              <Route
-                path="/"
-                element={<ListOfWords listOfWords={listOfWords} />}
-              />
-              <Route
-                path="/flip"
-                element={<FlippingCards listOfWords={listOfWords} />}
-              />
+              <Route path="/home" element={<ListOfWords />} />
+              <Route path="/" element={<ListOfWords />} />
+              <Route path="/flip" element={<FlippingCards />} />
               <Route path="/addcard" element={<WordCardAdd />} />
               <Route path="/train" element={<Train />} />
               <Route
