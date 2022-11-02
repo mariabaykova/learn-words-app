@@ -8,9 +8,6 @@ import WordCardMini from "./WordCardMini.jsx";
 export default function ListOfWords() {
   const { listOfWords = [] } = useSelector((state) => state.listOfWords);
 
-  console.log("listOfWords 1");
-  console.log(listOfWords);
-
   return (
     <Box
       sx={{

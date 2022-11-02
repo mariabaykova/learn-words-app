@@ -1,3 +1,8 @@
+export const pages = [
+  { menuTitle: "Home", route: "home" },
+  { menuTitle: "Flip", route: "flip" },
+];
+
 // для формы редактирования слова - параметры для настройки полей ввода и их проверки
 export const editableFields = {
   id: {

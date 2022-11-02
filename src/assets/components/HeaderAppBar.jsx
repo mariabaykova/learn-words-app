@@ -14,6 +14,39 @@ import Slide from "@mui/material/Slide";
 import useScrollTrigger from "@mui/material/useScrollTrigger";
 import SchoolIcon from "@mui/icons-material/School";
 
+const sxSmallScreenTitle = {
+  display: { xs: "flex", md: "none" },
+  flexGrow: 0,
+  fontFamily: "monospace",
+  fontWeight: 700,
+  letterSpacing: ".2rem",
+  color: "inherit",
+  textDecoration: "none",
+  alignSelf: "right",
+  textAlign: "right",
+  mr: 0,
+};
+const sxBigScreenTitle = {
+  mr: 2,
+  display: { xs: "none", md: "flex" },
+  fontFamily: "monospace",
+  fontWeight: 700,
+  letterSpacing: ".3rem",
+  color: "inherit",
+  textDecoration: "none",
+};
+
+const sxSchoolIconSmall = {
+  display: { xs: "flex", sm: "flex", md: "none" },
+  mr: 1,
+  flexGrow: 0,
+  justifyContent: "right",
+};
+const sxSchoolIconBig = {
+  display: { xs: "none", md: "flex" },
+  mr: 1,
+};
+
 function HeaderAppBar(props) {
   const { pages } = props;
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -26,7 +59,7 @@ function HeaderAppBar(props) {
     setAnchorElNav(null);
   };
 
-  const handleMenuClick = (event) => {
+  const handleMenuClick = () => {
     setAnchorElNav(null);
   };
 
@@ -44,38 +77,6 @@ function HeaderAppBar(props) {
     );
   }
 
-  const sxSmallScreenTitle = {
-    display: { xs: "flex", md: "none" },
-    flexGrow: 0,
-    fontFamily: "monospace",
-    fontWeight: 700,
-    letterSpacing: ".2rem",
-    color: "inherit",
-    textDecoration: "none",
-    alignSelf: "right",
-    textAlign: "right",
-    mr: 0,
-  };
-  const sxBigScreenTitle = {
-    mr: 2,
-    display: { xs: "none", md: "flex" },
-    fontFamily: "monospace",
-    fontWeight: 700,
-    letterSpacing: ".3rem",
-    color: "inherit",
-    textDecoration: "none",
-  };
-
-  const sxSchoolIconSmall = {
-    display: { xs: "flex", sm: "flex", md: "none" },
-    mr: 1,
-    flexGrow: 0,
-    justifyContent: "right",
-  };
-  const sxSchoolIconBig = {
-    display: { xs: "none", md: "flex" },
-    mr: 1,
-  };
   return (
     <HideOnScroll>
       <AppBar

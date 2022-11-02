@@ -1,34 +1,24 @@
 import * as React from "react";
+import { lazy } from "react";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addWordsFromDBAction } from "./store/wordsReducer";
 
 import CircularProgress from "@mui/material/CircularProgress";
+import HeaderAppBar from "./assets/components/HeaderAppBar";
+import ListOfWords from "./assets/components/ListOfWords";
+import FlippingCards from "./assets/components/FlippingCards";
+import WordCardAdd from "./assets/components/WordCardAdd";
+import Train from "./assets/components/Train";
+
 import pic404 from "./assets/pics/404page.jpeg";
-import { lazy } from "react";
 import getServices from "./Api/getServices";
-
-const HeaderAppBar = lazy(() => import("./assets/components/HeaderAppBar"));
-const ListOfWords = lazy(() => import("./assets/components/ListOfWords"));
-const FlippingCards = lazy(() => import("./assets/components/FlippingCards"));
-const WordCardAdd = lazy(() => import("./assets/components/WordCardAdd"));
+import { pages } from "./assets/conf/Settings";
 const NothingFound = lazy(() => import("./assets/components/NothingFound"));
-const Train = lazy(() => import("./assets/components/Train"));
 
-// структура для описания пунктов меню. Если появится новый, вносим заголовок для меню и роут
-// перенести в Settings?
-const pages = [
-  { menuTitle: "Home", route: "home" },
-  { menuTitle: "Flip", route: "flip" },
-  // { menuTitle: "Train", route: "train" },
-];
 function App() {
-  // const { listOfWords, assignListOfWords } = React.useContext(WordsContext);
   // запрос текущего состояния списка слов из стейта
   const listOfWords = useSelector((state) => state.listOfWords);
-
-  console.log("listOfWords");
-  console.log(listOfWords);
 
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(null);

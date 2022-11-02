@@ -17,9 +17,8 @@ import MuiAlert from "@mui/material/Alert";
 
 import { editableFields, emptyFieldMsg } from "../conf/Settings";
 import Validation from "../../assets/utilities/Validation";
-import "@fontsource/roboto/400.css";
-
 import postServices from "../../Api/postServices";
+import "@fontsource/roboto/400.css";
 
 const sxMsgBox = {
   minWidth: 150,
