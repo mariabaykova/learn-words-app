@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addWordAction, removeWordAction } from "../../store/wordsReducer";
 
 import Box from "@mui/material/Box";
@@ -57,10 +57,6 @@ const { vertical, horizontal } = { vertical: "top", horizontal: "center" };
 export default function WordCardEdit(props) {
   const { wordCard } = props;
 
-  // const { listOfWords, assignListOfWords } = React.useContext(WordsContext);
-  const { listOfWords = [] } = useSelector((state) => state.listOfWords);
-  console.log("listOfWords 2");
-  console.log(listOfWords);
   const dispatch = useDispatch();
 
   //   вводим состояние - 1="изменения сохранены", 2="ошибка при сохранении изменений", 0="не сохранены"( по дефолту = 0 )

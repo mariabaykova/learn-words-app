@@ -9,7 +9,6 @@ import HeaderAppBar from "./assets/components/HeaderAppBar";
 import ListOfWords from "./assets/components/ListOfWords";
 import FlippingCards from "./assets/components/FlippingCards";
 import WordCardAdd from "./assets/components/WordCardAdd";
-import Train from "./assets/components/Train";
 
 import pic404 from "./assets/pics/404page.jpeg";
 import getServices from "./Api/getServices";
@@ -44,7 +43,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div>
+      <React.Fragment>
         <HeaderAppBar pages={pages} />
         {loading && (
           <div>
@@ -67,7 +66,6 @@ function App() {
               <Route path="/" element={<ListOfWords />} />
               <Route path="/flip" element={<FlippingCards />} />
               <Route path="/addcard" element={<WordCardAdd />} />
-              <Route path="/train" element={<Train />} />
               <Route
                 path="*"
                 element={
@@ -80,7 +78,7 @@ function App() {
             </Routes>
           </React.Suspense>
         )}
-      </div>
+      </React.Fragment>
     </BrowserRouter>
   );
 }
