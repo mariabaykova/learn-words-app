@@ -1,43 +1,40 @@
 import * as React from "react";
+import { lazy } from "react";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
-
-import { WordsContext } from "./assets/components/Context";
+import { useDispatch, useSelector } from "react-redux";
+import { addWordsFromDBAction } from "./store/wordsReducer";
 
 import CircularProgress from "@mui/material/CircularProgress";
+import HeaderAppBar from "./assets/components/HeaderAppBar";
+import ListOfWords from "./assets/components/ListOfWords";
+import FlippingCards from "./assets/components/FlippingCards";
+import WordCardAdd from "./assets/components/WordCardAdd";
 
 import pic404 from "./assets/pics/404page.jpeg";
-import { lazy } from "react";
 import getServices from "./Api/getServices";
-
-const HeaderAppBar = lazy(() => import("./assets/components/HeaderAppBar"));
-const ListOfWords = lazy(() => import("./assets/components/ListOfWords"));
-const FlippingCards = lazy(() => import("./assets/components/FlippingCards"));
-const WordCardAdd = lazy(() => import("./assets/components/WordCardAdd"));
+import { pages } from "./assets/conf/Settings";
 const NothingFound = lazy(() => import("./assets/components/NothingFound"));
-const Train = lazy(() => import("./assets/components/Train"));
 
-// структура для описания пунктов меню. Если появится новый, вносим заголовок для меню и роут
-// перенести в Settings?
-const pages = [
-  { menuTitle: "Home", route: "home" },
-  { menuTitle: "Flip", route: "flip" },
-  // { menuTitle: "Train", route: "train" },
-];
 function App() {
-  const { listOfWords, assignListOfWords } = React.useContext(WordsContext);
+  // запрос текущего состояния списка слов из стейта
+  const listOfWords = useSelector((state) => state.listOfWords);
+
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
+
+  const dispatch = useDispatch();
 
   async function getListOfWords() {
     const getList = await getServices.getListOfWords();
     if (getList.error) {
+      dispatch(addWordsFromDBAction([]));
       setError(getList.error);
-      assignListOfWords([]);
+      setLoading(false);
     } else if (getList.data) {
-      assignListOfWords(getList.data);
+      dispatch(addWordsFromDBAction(getList.data));
       setError(null);
+      setLoading(false);
     }
-    setLoading(false);
   }
 
   React.useEffect(() => {
@@ -46,7 +43,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div>
+      <React.Fragment>
         <HeaderAppBar pages={pages} />
         {loading && (
           <div>
@@ -65,20 +62,10 @@ function App() {
             }
           >
             <Routes>
-              <Route
-                path="/home"
-                element={<ListOfWords listOfWords={listOfWords} />}
-              />
-              <Route
-                path="/"
-                element={<ListOfWords listOfWords={listOfWords} />}
-              />
-              <Route
-                path="/flip"
-                element={<FlippingCards listOfWords={listOfWords} />}
-              />
+              <Route path="/home" element={<ListOfWords />} />
+              <Route path="/" element={<ListOfWords />} />
+              <Route path="/flip" element={<FlippingCards />} />
               <Route path="/addcard" element={<WordCardAdd />} />
-              <Route path="/train" element={<Train />} />
               <Route
                 path="*"
                 element={
@@ -91,7 +78,7 @@ function App() {
             </Routes>
           </React.Suspense>
         )}
-      </div>
+      </React.Fragment>
     </BrowserRouter>
   );
 }

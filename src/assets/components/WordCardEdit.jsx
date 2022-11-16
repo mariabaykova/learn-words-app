@@ -1,4 +1,7 @@
 import * as React from "react";
+import { useDispatch } from "react-redux";
+import { addWordAction, removeWordAction } from "../../store/wordsReducer";
+
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -12,15 +15,10 @@ import TextField from "@mui/material/TextField";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 
-import { WordsContext } from "./Context";
-
 import { editableFields, emptyFieldMsg } from "../conf/Settings";
-import Utilities from "../utilities/Utilities";
 import Validation from "../../assets/utilities/Validation";
-import "@fontsource/roboto/400.css";
-
-// import getServices from "../../Api/getServices";
 import postServices from "../../Api/postServices";
+import "@fontsource/roboto/400.css";
 
 const sxMsgBox = {
   minWidth: 150,
@@ -59,7 +57,7 @@ const { vertical, horizontal } = { vertical: "top", horizontal: "center" };
 export default function WordCardEdit(props) {
   const { wordCard } = props;
 
-  const { listOfWords, assignListOfWords } = React.useContext(WordsContext);
+  const dispatch = useDispatch();
 
   //   вводим состояние - 1="изменения сохранены", 2="ошибка при сохранении изменений", 0="не сохранены"( по дефолту = 0 )
   const [saved, setSaved] = React.useState(0);
@@ -88,9 +86,8 @@ export default function WordCardEdit(props) {
       if (updList.error) {
         setSaved(2);
       } else {
-        assignListOfWords(
-          Utilities.UpdateArrayElem(listOfWords, wordCard, inputsState)
-        );
+        dispatch(removeWordAction(wordCard.id));
+        dispatch(addWordAction(inputsState));
         setSaved(1);
       }
     }
@@ -111,7 +108,7 @@ export default function WordCardEdit(props) {
     // здесь дернуть апи с запросом на удаление и обработать результат выполнения
     setDeleted(true);
     // изменить список слов для показа
-    assignListOfWords(Utilities.DelElemFromArray(listOfWords, wordCard));
+    dispatch(removeWordAction(wordCard.id));
   };
 
   // состояние редактируемых полей

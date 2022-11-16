@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
@@ -10,9 +11,8 @@ import NothingFound from "./NothingFound.jsx";
 import Utilities from "../utilities/Utilities.js";
 import picNoData from "../../assets/pics/noData.jpeg";
 
-export default function FlippingCards(props) {
-  // если ничего не передали, значит считаем список пустым
-  const { listOfWords = [] } = props;
+export default function FlippingCards() {
+  const { listOfWords = [] } = useSelector((state) => state.listOfWords);
 
   // в состоянии этого компонента хранится индекс карточки, которую нужно показать
   // нажатие на стрелки двигает этот индекс и при отрисовке показывается карточка с нужным индексом
@@ -48,28 +48,28 @@ export default function FlippingCards(props) {
   const learnedWordsNumber = learnedWordsList.length || 0;
 
   // прослушивание документа на нажатие стрелок влево-вправо, чтобы стрелками можно было листать список
+  const handleClick = (event) => {
+    if (event.code === "ArrowLeft") {
+      // изменяем (-1) состояние, в котором хранится карта, которую сейчас показываем
+      setCardToShow((prevCardId) => {
+        return prevCardId > 0 ? prevCardId - 1 : 0;
+      });
+    }
+    if (event.code === "ArrowRight") {
+      setCardToShow((prevCardId) => {
+        return prevCardId < listLength - 1 ? prevCardId + 1 : listLength - 1;
+      });
+    }
+  };
+
   React.useEffect(() => {
-    const handleClick = (event) => {
-      if (event.code === "ArrowLeft") {
-        // изменяем (-1) состояние, в котором хранится карта, которую сейчас показываем
-        setCardToShow((prevCardId) => {
-          return prevCardId > 0 ? prevCardId - 1 : 0;
-        });
-      }
-      if (event.code === "ArrowRight") {
-        setCardToShow((prevCardId) => {
-          return prevCardId < listLength - 1 ? prevCardId + 1 : listLength - 1;
-        });
-      }
-    };
     // подключаем прослушивание документа при монтировании компонента
     document.body.addEventListener("keydown", handleClick);
-
     // при размонтировании прослушка документа снимается
     return () => {
       document.body.removeEventListener("keydown", handleClick);
     };
-  });
+  }, []);
 
   const sxBoxWrap = {
     justifyContent: "center",
@@ -95,7 +95,7 @@ export default function FlippingCards(props) {
     boxShadow: 20,
   };
   return (
-    <>
+    <React.Fragment>
       {!listLength ? (
         <NothingFound
           title="Sorry, looks like you have no cards to flip"
@@ -158,6 +158,6 @@ export default function FlippingCards(props) {
           </Box>
         </>
       )}
-    </>
+    </React.Fragment>
   );
 }

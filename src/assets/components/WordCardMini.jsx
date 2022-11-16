@@ -67,7 +67,7 @@ export default function WordCardMini(props) {
   };
 
   return (
-    <div>
+    <React.Fragment>
       <Card sx={sxCard}>
         <CardContent sx={sxCardContent}>
           <Typography variant="h5" component="div">
@@ -111,6 +111,6 @@ export default function WordCardMini(props) {
           </Box>
         </Fade>
       </Modal>
-    </div>
+    </React.Fragment>
   );
 }
