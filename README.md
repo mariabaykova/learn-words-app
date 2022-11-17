@@ -7,11 +7,13 @@
     <img src="https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white" height="25"/>
 </div>
 <h4 align="center">This small project has been created to try technologies new for me.</h4>
-<p>the application's functionalities include:
-1. cards list loading from API
-2. cards viewing by clicking arrows on page or using buttons, swiping or using touchpad.  
-3. adding a new card to data store
-4. correction of an existing card in data storage
-5. deleting a card from data store (temporarily a card can be daleted just from redux storage)
-</p>
+<p>The application's functionalities include:</p>
+<ol>
+    <li>cards list loading from API</li>
+    <li>cards viewing by clicking arrows on page or using buttons, swiping or using touchpad.  </li>
+    <li>adding a new card to data store</li>
+    <li>correction of an existing card in data storage</li>
+    <li>deleting a card from data store (temporarily a card can be daleted just from redux storage)</li>
+</ol>
+
 <pre>Web-app is responsive.</pre>
