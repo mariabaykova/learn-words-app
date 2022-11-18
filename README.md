@@ -7,7 +7,7 @@
     <img src="https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white" height="25"/>
 </div>
 <h4 align="center">This small project has been created to try technologies new for me.</h4>
-<p>You can take a look at it <a href="https://mariabaykova.github.io/learn-words-app/">here</a>.</p>
+<p>You can take a look at it <a href="https://mariabaykova.github.io/learn-words-app/" target="_blank">here</a>.</p>
 <p>The application's functionalities include:</p>
 <ol>
     <li>cards list loading from API</li>
