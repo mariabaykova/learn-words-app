@@ -8,7 +8,6 @@
 </div>
 <h4 align="center">This small project has been created to try technologies new for me.</h4>
 <p>You can take a look at it <a href="https://mariabaykova.github.io/learn-words-app/">here</a>.</p>
-<pre>
 <p>The application's functionalities include:</p>
 <ol>
     <li>cards list loading from API</li>
@@ -17,6 +16,4 @@
     <li>correction of an existing card in data storage</li>
     <li>deleting a card from data store (temporarily a card can be daleted just from redux storage)</li>
 </ol>
-
 <p>Web-app is responsive.</p>
-</pre>
