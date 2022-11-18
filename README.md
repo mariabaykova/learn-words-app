@@ -7,6 +7,8 @@
     <img src="https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white" height="25"/>
 </div>
 <h4 align="center">This small project has been created to try technologies new for me.</h4>
+<p>You can take a look at it <a href="https://mariabaykova.github.io/learn-words-app/">here</a>.</p>
+<pre>
 <p>The application's functionalities include:</p>
 <ol>
     <li>cards list loading from API</li>
@@ -16,4 +18,5 @@
     <li>deleting a card from data store (temporarily a card can be daleted just from redux storage)</li>
 </ol>
 
-<pre>Web-app is responsive.</pre>
+<p>Web-app is responsive.</p>
+</pre>
